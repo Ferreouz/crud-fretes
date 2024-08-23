@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Login from './pages/Login'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -7,7 +8,7 @@ function App() {
   return (
     <>
      <div className='app'>
-      <p>Hello</p>
+      <Login />
      </div>
     </>
   )
