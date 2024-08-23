@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "noUncheckedIndexedAccess": true,
+    "noEmit": true,
+    "outDir": "dist"
+  },
+  "exclude": [
+    "node_modules",
+    "test",
+    "dist"
+  ],
+  "lib": ["es2015"]
+}
