@@ -21,7 +21,7 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
       nome: name,
       email: user,
       senha: password,
-      // userType
+      userType
     }
     setUser('');
     setName('');
