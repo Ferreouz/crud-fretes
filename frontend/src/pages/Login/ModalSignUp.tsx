@@ -3,6 +3,8 @@ import truck from "../../assets/truck.png";
 import { useState, SyntheticEvent } from 'react';
 import "./ModalSignUp.css";
 import axios from 'axios';
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
 
 interface PropsModalSignUp {
   opened: boolean,
@@ -14,6 +16,8 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [userType, setUserType] = useState('');
+  const signIn = useSignIn();
+  const navigate = useNavigate();
 
   function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
@@ -29,9 +33,19 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
     setUserType('');
     axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/register", fields)
       .then(response => {
-        if (response.status == 200) {
+        if (response.status == 200 && response.data.access_token &&
+          signIn({
+              auth: {
+                  token: response.data.access_token,
+                  type: 'Bearer'
+              },
+              userState: {
+                  email: fields.email,
+                  //TODO: set user type
+              }
+          })) {
           alert("Cadastro concluido! Redirecionando...")
-          sessionStorage.setItem('token', response.data.access_token)
+          navigate("/")
         }
         //
       })

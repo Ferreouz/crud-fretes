@@ -1,11 +1,15 @@
 import { useState, SyntheticEvent } from 'react';
 import ModalSignUp from './ModalSignUp';
 import axios from 'axios';
+import useSignIn from "react-auth-kit/hooks/useSignIn";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
     const [modalOpened, setModalOpened] = useState(false);
+    const signIn = useSignIn();
+    const navigate = useNavigate();
 
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
@@ -17,9 +21,20 @@ const Login = () => {
         setPassword('');
         axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/login", fields)
             .then(response => {
-                if (response.status == 200) {
+                if (response.status == 200 && response.data.access_token &&
+                    signIn({
+                        auth: {
+                            token: response.data.access_token,
+                            type: 'Bearer'
+                        },
+                        userState: {
+                            email: fields.email,
+                            //TODO: set user type
+                        }
+                    })
+                ) {
                     alert("Logado! Redirecionando...")
-                    sessionStorage.setItem('token', response.data.access_token)
+                    navigate("/")
                 }
                 //
             })
