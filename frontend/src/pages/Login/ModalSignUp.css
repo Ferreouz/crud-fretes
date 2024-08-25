@@ -1,8 +1,0 @@
-.modal-body{
-    display: flex;
-    align-items: center;
-}
-.modal-body form {
-    width: 300px;
-    max-width: 100%;
-}

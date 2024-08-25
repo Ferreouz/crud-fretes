@@ -45,6 +45,7 @@ const Login = () => {
     }
 
     return (
+        <>
         <div className='container'>
             <h2>
                 Página de Login
@@ -66,8 +67,11 @@ const Login = () => {
                     Não tem uma conta? <a onClick={() => setModalOpened(true)}>Clique aqui</a>
                 </p>
             </div>
-            <ModalSignUp opened={modalOpened} closeModal={() => setModalOpened(false)} />
         </div>
+        <div className='container'>
+        <ModalSignUp opened={modalOpened} closeModal={() => setModalOpened(false)} />
+        </div>
+        </>
     )
 }
 

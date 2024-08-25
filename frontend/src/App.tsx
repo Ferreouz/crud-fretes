@@ -4,7 +4,6 @@ import { Route, Routes } from "react-router-dom";
 import RequireAuth from '@auth-kit/react-router/RequireAuth';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
-
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
