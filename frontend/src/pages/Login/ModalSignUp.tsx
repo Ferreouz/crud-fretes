@@ -1,4 +1,3 @@
-import truck from "../../assets/truck.png";
 import { useState, SyntheticEvent } from 'react';
 import axios from 'axios';
 import useSignIn from "react-auth-kit/hooks/useSignIn";

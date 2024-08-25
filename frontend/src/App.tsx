@@ -4,6 +4,8 @@ import { Route, Routes } from "react-router-dom";
 import RequireAuth from '@auth-kit/react-router/RequireAuth';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
+import Home from './pages/Home';
+
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
@@ -22,7 +24,7 @@ function App() {
               path="/"
               element={
                 <RequireAuth fallbackPath="/login">
-                  <p>logged</p>
+                  <Home />
                 </RequireAuth>
               }
             ></Route>
