@@ -35,7 +35,7 @@ function Home() {
         operation={operation as PropsModalFreight["operation"]}
       />
       <div className="row">
-        <h1 className="col-6">Todos os Fretes</h1>
+        <h3 className="col-6">Todos os Fretes</h3>
         <div className=" col-md-3 offset-md-3">
           <Button variant="primary" onClick={() => {
             setOperation("create");
