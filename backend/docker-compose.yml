@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres
+    env_file: .env
+    volumes:
+      - ./sql/01-create-db.sql:/docker-entrypoint-initdb.d/01-create-db.sql
+      - ./sql/02-default-values.sql:/docker-entrypoint-initdb.d/02-default-values.sql
+      - ./sql/03-mock-data.sql:/docker-entrypoint-initdb.d/03-mock-data.sql
+    environment:
+      POSTGRES_USERNAME: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
+    ports:
+      - "5432:5432"
+      
