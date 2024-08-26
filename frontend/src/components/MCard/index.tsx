@@ -23,8 +23,8 @@ export default function MCard(arg: Props) {
              {text} 
         </Card.Text>
         ))}
-        <Card.Link className={"btn btn-danger" + (arg.canDelete ? "" : " disabled")} href="#">Apagar</Card.Link>
-        <Card.Link className={"btn" + (arg.canEdit ? "" : " disabled")} >Editar</Card.Link>
+        <Card.Link className={"btn btn-danger" + (arg.canDelete ? "" : " disabled")} onClick={arg.onDelete}>Apagar</Card.Link>
+        <Card.Link className={"btn" + (arg.canEdit ? "" : " disabled")} onClick={arg.onEdit}>Editar</Card.Link>
         <br></br>
         <small className="text-info">Última alteração {moment(arg.lastUpdate).format("DD/MM HH:mm")}</small>
       </Card.Body>

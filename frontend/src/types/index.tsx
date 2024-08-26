@@ -5,12 +5,12 @@ export interface Vehicle {
 }
 export interface Freight {
     id?: number,
-    productName: string,
-    readonly price?: number,
-    readonly rate?: number,
+    productName?: string,
+    price?: number,
+    rate?: number,
     driver_id?: number,
-    vehicle: Vehicle,
-    distance: number,
+    vehicle?: Vehicle,
+    distance?: number,
     opened?: boolean,
     closed_at?: Date,
     created_at?: Date,
