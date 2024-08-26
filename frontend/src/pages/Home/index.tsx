@@ -5,7 +5,7 @@ import { Freight } from "../../types";
 import { getFreights } from "../../hooks/Freight";
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
-import MNavbarCompany from "../../components/ MNavbarCompany";
+import MNavbarCompany from "../../components/MNavbarCompany";
 
 function Home() {
   const [freights, setFreights] = useState<Freight[]>([]);

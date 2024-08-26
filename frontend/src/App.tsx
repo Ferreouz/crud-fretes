@@ -5,7 +5,6 @@ import RequireAuth from '@auth-kit/react-router/RequireAuth';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
 import Home from './pages/Home';
-import { useNavigate } from "react-router-dom";
 
 const store = createStore({
   authName: '_auth',
@@ -15,7 +14,6 @@ const store = createStore({
 });
 
 function App() {
-  const navigate = useNavigate();
   return (
     <>
       <div className='container'>
