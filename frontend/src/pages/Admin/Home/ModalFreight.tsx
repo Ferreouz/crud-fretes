@@ -3,8 +3,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { IVehicle } from '../../types';
-import { getVehicles } from '../../hooks/Vehicle';
+import { IVehicle } from '../../../types';
+import { getVehicles } from '../../../hooks/Vehicle';
 import { PropsModalFreight } from './types';
 
 function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, freight }: PropsModalFreight) {

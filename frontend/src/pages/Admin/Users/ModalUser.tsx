@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { PropsModalUser } from './types';
-import { IUser } from '../../types';
+import { IUser } from '../../../types';
 
 function ModalVehicle({ opened, closeModal, operation, addUser, editUser, user }: PropsModalUser) {
     const [name, setName] = useState("");

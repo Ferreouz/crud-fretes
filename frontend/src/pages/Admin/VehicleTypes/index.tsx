@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
-import Card from "../../components/MCard";
+import Card from "../../../components/MCard";
 import { Button } from "react-bootstrap";
-import { IVehicleType } from "../../types";
-import * as api from "../../hooks/Vehicle";
-import MNavbarCompany from "../../components/MNavbarCompany";
+import { IVehicleType } from "../../../types";
+import * as api from "../../../hooks/Vehicle";
+import MNavbarCompany from "../../../components/MNavbarCompany";
 import { Col } from 'react-bootstrap';
 import ModalVehicleType from "./ModalVehicleType";
 import { PropsModalVehicleType } from "./types";

@@ -4,10 +4,10 @@ import { Route, Routes } from "react-router-dom";
 import RequireAuth from '@auth-kit/react-router/RequireAuth';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
-import Home from './pages/Home';
-import Vehicles from './pages/Vehicles'
-import VehicleType from './pages/VehicleTypes'
-import Users from './pages/Users'
+import Home from './pages/Admin/Home';
+import Vehicles from './pages/Admin/Vehicles'
+import VehicleType from './pages/Admin/VehicleTypes'
+import Users from './pages/Admin/Users'
 
 const store = createStore({
   authName: '_auth',

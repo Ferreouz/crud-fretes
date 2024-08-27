@@ -3,9 +3,9 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { IVehicleType } from '../../types';
+import { IVehicleType } from '../../../types';
 import { PropsModalVehicle } from './types';
-import * as api from "../../hooks/Vehicle";
+import * as api from "../../../hooks/Vehicle";
 
 function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, vehicle }: PropsModalVehicle) {
     const [vehiclePlate, setVehiclePlate] = useState("");

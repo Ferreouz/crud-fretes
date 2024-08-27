@@ -1,4 +1,4 @@
-import { IFreight } from '../../types';
+import { IFreight } from '../../../types';
 
 export interface PropsModalFreight {
     opened: boolean,

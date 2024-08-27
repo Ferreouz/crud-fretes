@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import Card from "../../components/MCard";
+import Card from "../../../components/MCard";
 import { Button } from "react-bootstrap";
-import { IFreight } from "../../types";
-import { createFreight, getFreights, updateFreight, deleteFreight } from "../../hooks/Freight";
+import { IFreight } from "../../../types";
+import { createFreight, getFreights, updateFreight, deleteFreight } from "../../../hooks/Freight";
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
-import MNavbarCompany from "../../components/MNavbarCompany";
+import MNavbarCompany from "../../../components/MNavbarCompany";
 import { Col } from 'react-bootstrap';
 function Home() {
   const [freights, setFreights] = useState<IFreight[]>([]);

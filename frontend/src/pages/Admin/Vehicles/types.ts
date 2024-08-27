@@ -1,4 +1,4 @@
-import { IVehicle } from '../../types';
+import { IVehicle } from '../../../types';
 
 export interface PropsModalVehicle {
     opened: boolean,
