@@ -19,7 +19,7 @@ CREATE TABLE "Vehicles" (
 CREATE TABLE "Users" (
     "id" serial primary key NOT NULL,
     "name" VARCHAR(255) NOT NULL,
-    "type" CHAR(10) NOT NULL,
+    "type" VARCHAR(10) NOT NULL,
     "email" VARCHAR(255) UNIQUE NOT NULL,
     "password" VARCHAR(255) NOT NULL
 );

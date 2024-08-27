@@ -19,7 +19,7 @@ export default function route(app) {
 
     app.post("/freights", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
-            return res.sendStatus(401);
+            return res.sendStatus(403);
         }
         try {
             await db.freights.insert(req.body);
@@ -31,7 +31,7 @@ export default function route(app) {
 
     app.put("/freights/:id", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
-            return res.sendStatus(401);
+            return res.sendStatus(403);
         }
         try {
             await db.freights.update(req.params.id, req.body);
@@ -43,7 +43,7 @@ export default function route(app) {
 
     app.delete("/freights/:id", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
-            return res.sendStatus(401);
+            return res.sendStatus(403);
         }
         try {
             await db.freights.delete(req.params.id);
