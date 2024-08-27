@@ -1,58 +1,58 @@
 import { useState, useEffect } from "react";
 import Card from "../../components/MCard";
 import { Button } from "react-bootstrap";
-import { Freight } from "../../types";
-import { createFreight, getFreights, updateFreight, deleteFreight } from "../../hooks/Freight";
-import ModalFreight from "./ModalFreight";
-import { PropsModalFreight } from "./types";
+import { Vehicle } from "../../types";
+import * as api from "../../hooks/Vehicle";
 import MNavbarCompany from "../../components/MNavbarCompany";
 import { Col } from 'react-bootstrap';
+import ModalVehicle from "./ModalVehicle";
+import { PropsModalVehicle } from "./types";
 function Home() {
-  const [freights, setFreights] = useState<Freight[]>([]);
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [showModal, setModalState] = useState(false);
   const [operation, setOperation] = useState('');
-  const [freightForEdition, setFreightForEdition] = useState<Freight>();
+  const [vehicleForEdition, setVehicleForEdition] = useState<Vehicle>();
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getFreights();
-      setFreights(data);
+      const data = await api.getVehicles();
+      setVehicles(data);
     };
     fetchData();
   }, []);
 
-  async function update(newFreight: Freight) {
-    const res = await updateFreight(newFreight)
+  async function update(newVehicle: Vehicle, oldPlate: string) {
+    const res = await api.updateVehicle(newVehicle, oldPlate)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar atualizar o Frete, por favor, tente novamente")
       return;
     }
-    setFreights(await getFreights());
+    setVehicles(await api.getVehicles());
   }
 
-  async function add(newFreight: Freight) {
-    const res = await createFreight(newFreight)
+  async function add(newVehicle: Vehicle) {
+    const res = await api.createVehicle(newVehicle)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar criar o Frete, por favor, tente novamente")
       return;
     }
-    setFreights(await getFreights());
+    setVehicles(await api.getVehicles());
   }
 
-  async function del(id: number | undefined) {
-    if (!id) {
+  async function del(plate: string) {
+    if (!plate) {
       alert("Ocorreu um erro inesperado, por favor, contate o suporte")
       return;
     }
     if (!confirm('Deseja realmente APAGAR este Frete?')) {
       return;
     }
-    const res = await deleteFreight(id)
+    const res = await api.deleteVehicle(plate);
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar apagar o Frete, por favor, tente novamente")
       return;
     }
-    setFreights(await getFreights());
+    setVehicles(await api.getVehicles());
   }
 
 
@@ -60,44 +60,43 @@ function Home() {
     <>
       <MNavbarCompany />
       <div className="container">
-        <ModalFreight opened={showModal} closeModal={() => setModalState(false)} freight={freightForEdition}
-          addFreight={(newFreight: Freight) => add(newFreight)}
-          editFreight={(newFreight: Freight) => update(newFreight)}
-          operation={operation as PropsModalFreight["operation"]}
+        <ModalVehicle opened={showModal} closeModal={() => setModalState(false)} vehicle={vehicleForEdition}
+          addVehicle={(newVehicle: Vehicle) => add(newVehicle)}
+          editVehicle={(newVehicle: Vehicle, oldPlate: string) => update(newVehicle, oldPlate)}
+          operation={operation as PropsModalVehicle["operation"]}
         />
         <div className="d-flex justify-content-evenly">
-          <h3 className="col-3">Todos os Fretes</h3>
+          <h3 className="col-3">Veículos</h3>
           <div className=" col-md-3 offset-md-3">
             <Button variant="primary" onClick={() => {
               setOperation("create");
-              setFreightForEdition({});
+              setVehicleForEdition(undefined);
               setModalState(true);
             }}>
-              Anunciar Frete
+              Adicionar
             </Button>
           </div>
         </div>
         <br />
         <div className="container text-center">
           <div className="row gy-5">
-            {freights?.map((item: Freight) => (
-              <Col key={item.id}>
+            {vehicles?.map((item: Vehicle) => (
+              <Col key={item.plate}>
                 <Card
-                  key={item.id}
-                  title={"Produto: " + (item.product_name || "")}
-                  subtitle={"R$" + item.price + ` + ${item.rate} (taxa)`}
+                  key={item.plate}
+                  title={"Veículo: " + (item.name || "")}
+                  subtitle={`PLACA: ${item.plate}`}
                   text={[
-                    `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
-                    `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,
+                    `Tipo: ${item.type}`,
                   ]}
                   onEdit={() => {
                     setOperation("update");
-                    setFreightForEdition(item);
+                    setVehicleForEdition(item);
                     setModalState(true);
                   }}
-                  onDelete={() => del(item.id)}
-                  canEdit={item.open == true}
-                  canDelete={item.open == true}
+                  onDelete={() => del(item.plate)}
+                  canEdit={true}
+                  canDelete={true}
                   lastUpdate={item.updated_at}
                 />
               </Col>

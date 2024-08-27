@@ -5,7 +5,7 @@ import RequireAuth from '@auth-kit/react-router/RequireAuth';
 import AuthProvider from 'react-auth-kit';
 import createStore from 'react-auth-kit/createStore';
 import Home from './pages/Home';
-
+import Vehicles from './pages/Vehicles'
 const store = createStore({
   authName: '_auth',
   authType: 'cookie',
@@ -16,19 +16,27 @@ const store = createStore({
 function App() {
   return (
     <>
-        <AuthProvider store={store}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <RequireAuth fallbackPath="/login">
-                  <Home />
-                </RequireAuth>
-              }
-            ></Route>
-            <Route path="/login" element={<Login />}></Route>
-          </Routes>
-        </AuthProvider>
+      <AuthProvider store={store}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <RequireAuth fallbackPath="/login">
+                <Home />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/veiculos"
+            element={
+              <RequireAuth fallbackPath="/login">
+                <Vehicles />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route path="/login" element={<Login />}></Route>
+        </Routes>
+      </AuthProvider>
     </>
   )
 }

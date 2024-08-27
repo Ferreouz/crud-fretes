@@ -1,12 +1,20 @@
 export interface IVehicle {
     plate: string,
     name: string,
-    type: "Caminhonete" | "Furgão" | "Caminhão",
+    type: string,
 }
 export interface IVehicleType {
-    name: "Caminhonete" | "Furgão" | "Caminhão",
+    name: string,
     weight: number,
 }
 export interface IVehicleWithWeight extends IVehicle {
     weight: number
 }
+
+type VehicleModifiableKeys = keyof IVehicle;
+export function isVehicleModifiableKey(key: string): key is VehicleModifiableKeys {
+    return [
+       "plate", "name", "type"
+    ].includes(key);
+}
+

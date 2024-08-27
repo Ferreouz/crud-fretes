@@ -4,7 +4,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { Vehicle } from '../../types';
-import { getVehicles } from '../../hooks/vehicle';
+import { getVehicles } from '../../hooks/Vehicle';
 import { PropsModalFreight } from './types';
 
 function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, freight }: PropsModalFreight) {
@@ -25,17 +25,19 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
     event.preventDefault();
 
     const choosenVehicle = vehicles.filter((item) => item.plate == vehiclePlate).pop() as Vehicle;
+    const item = {
+      product_name: productName || freight?.product_name,
+      vehicle_plate: choosenVehicle?.plate || freight?.vehicle?.plate,
+      distance: distance || freight?.distance,
+      id: freight?.id
+    }
+
     switch (operation) {
       case "create":
-        addFreight({product_name: productName, vehicle_plate: choosenVehicle.plate, distance})
+        addFreight(item)
         break;
       case "update":
-        editFreight({
-          product_name: productName || freight?.product_name, 
-          vehicle_plate: choosenVehicle?.plate || freight?.vehicle?.plate, 
-          distance: distance || freight?.distance, 
-          id: freight?.id
-        })
+        editFreight(item)
         break;
       default:
         break;
@@ -61,7 +63,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
             <Row>
               <Form.Label >Nome do produto</Form.Label>
               <Form.Control
-                value={productName||freight?.product_name}
+                value={productName || freight?.product_name}
                 type="text"
                 onChange={(e) => setProductName(e.target.value)}
               />
@@ -70,18 +72,18 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
 
             <Row>
               <Form.Label >Veiculo</Form.Label>
-              <Form.Select  onChange={(e) => setVehiclePlate(e.target.value)}>
+              <Form.Select value={freight?.vehicle?.plate} onChange={(e) => setVehiclePlate(e.target.value)}>
                 <option>Selecionar</option>
                 {vehicles?.map((item: Vehicle) => (
-                  <option key={item.plate} value={item.plate} selected={freight?.vehicle?.plate == item.plate}>{item.plate} {item.name}</option>
+                  <option key={item.plate} value={item.plate} >{item.plate} {item.name}</option>
                 ))}
               </Form.Select>
             </Row>
-                <br />
+            <br />
             <Row>
               <Form.Label >Distância (em Km)</Form.Label>
               <Form.Control
-                value={distance||freight?.distance}
+                value={distance || freight?.distance}
                 type="number"
                 onChange={(e) => setDistance(Number(e.target.value))}
               />

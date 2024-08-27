@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { Freight } from "../types";
 import getCookie from "../utils/getCookie";
 
@@ -11,29 +11,50 @@ export async function getFreights(): Promise<Freight[]> {
     return res.data;
 }
 
-export async function updateFreight(freight: Freight): Promise<boolean> {
-    const res = await axios.put(import.meta.env.VITE_BACKEND_URL + "/freights/"+ freight.id, freight, {
-        headers: {
-            Authorization: `Bearer ${getCookie("_auth")}`
+export async function updateFreight(freight: Freight): Promise<{ success: boolean, error?: string }> {
+    try {
+        await axios.put(import.meta.env.VITE_BACKEND_URL + "/freights/" + freight.id, freight, {
+            headers: {
+                Authorization: `Bearer ${getCookie("_auth")}`
+            }
+        });
+        return { success: true };
+    } catch (e) {
+        if (e instanceof AxiosError) {
+            return { success: false, error: e?.response?.data?.error }
         }
-    });
-    return res.status == 200;
+    }
+    return { success: false }
 }
 
-export async function createFreight(freight: Freight): Promise<boolean> {
-    const res = await axios.post(import.meta.env.VITE_BACKEND_URL + "/freights", freight, {
-        headers: {
-            Authorization: `Bearer ${getCookie("_auth")}`
+export async function createFreight(freight: Freight): Promise<{ success: boolean, error?: string }> {
+    try {
+        await axios.post(import.meta.env.VITE_BACKEND_URL + "/freights", freight, {
+            headers: {
+                Authorization: `Bearer ${getCookie("_auth")}`
+            }
+        });
+        return { success: true };
+    } catch (e) {
+        if (e instanceof AxiosError) {
+            return { success: false, error: e?.response?.data?.error }
         }
-    });
-    return res.status == 201;
+    }
+    return { success: false }
 }
 
-export async function deleteFreight(id: number): Promise<boolean> {
-    const res = await axios.delete(import.meta.env.VITE_BACKEND_URL + "/freights/" + id, {
-        headers: {
-            Authorization: `Bearer ${getCookie("_auth")}`
+export async function deleteFreight(id: number): Promise<{ success: boolean, error?: string }> {
+    try {
+        await axios.delete(import.meta.env.VITE_BACKEND_URL + "/freights/" + id, {
+            headers: {
+                Authorization: `Bearer ${getCookie("_auth")}`
+            }
+        });
+        return { success: true };
+    } catch (e) {
+        if (e instanceof AxiosError) {
+            return { success: false, error: e?.response?.data?.error }
         }
-    });
-    return res.status == 200;
+    }
+    return { success: false }
 }

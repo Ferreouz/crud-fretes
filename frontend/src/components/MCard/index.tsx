@@ -16,23 +16,25 @@ interface Props {
 
 export default function MCard(arg: Props) {
   return (
-    <Card style={{ width: '18rem' }}>
+    <Card style={{ width: '18rem', height: '18rem' }}>
       <Card.Body>
         <Card.Title>{arg.title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{arg.subtitle}</Card.Subtitle>
+        <br />
         <Card>
           {arg.text.map((text, index) => (
-          <Card.Text key={index}>
-              {text} 
-          </Card.Text>
+            <Card.Text key={index}>
+              {text}
+            </Card.Text>
           ))}
         </Card>
-        <br />
+      </Card.Body>
+      <Card.Footer>
         <Card.Link className={"btn btn-danger" + (arg.canDelete ? "" : " disabled")} onClick={arg.onDelete}>Apagar</Card.Link>
         <Card.Link className={"btn" + (arg.canEdit ? "" : " disabled")} onClick={arg.onEdit}>Editar</Card.Link>
         <br />
         <small className="text-info">Última alteração {moment(arg.lastUpdate).format("DD/MM HH:mm")}</small>
-      </Card.Body>
+      </Card.Footer>
     </Card>
   )
 }

@@ -1,8 +1,10 @@
 export interface Vehicle {
     plate: string,
     name: string,
-    type: "Caminhonete" | "Furgão" | "Caminhão",
-    weight?: number
+    type: string,
+    weight?: number,
+    created_at?: Date,
+    updated_at?: Date,
 }
 export interface Freight {
     id?: number,
@@ -17,4 +19,8 @@ export interface Freight {
     closed_at?: Date,
     created_at?: Date,
     updated_at?: Date,
+}
+export interface VehicleType {
+    name: string,
+    weight?: number
 }
