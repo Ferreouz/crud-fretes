@@ -1,7 +1,7 @@
 import db from "./db";
 import express, { Request, Response } from 'express';
 import dotenv from "dotenv";
-import { calculateFreightPrice } from "./logic/logic";
+import { calculateFreightPrice } from "./utils/utils";
 import cors from "cors";
 import loginRoute from "./api/routes/login";
 import vehicleRoute from "./api/routes/vehicles";

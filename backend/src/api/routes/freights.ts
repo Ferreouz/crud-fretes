@@ -1,7 +1,7 @@
 import db from "../../db";
 import middleware from "../middleware";
 import type { Request, Response } from 'express';
-import { calculateFreightPrice } from "../../logic/logic";
+import { calculateFreightPrice } from "../../utils/utils";
 import isAdmin from "../isadmin";
 
 export default function route(app) {

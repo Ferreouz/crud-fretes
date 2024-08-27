@@ -18,3 +18,15 @@ export function calculateFreightPrice(distance: number, vehicleWeight: number): 
         rate: price * tax
     };
 }
+
+export function formatMoney(int: number | undefined): string | undefined {
+    if (!int || !(int > 0)) {
+        return undefined;
+    }
+    let out = int.toString();
+    if(!out.includes('.')){
+        return out + ",00";
+    }
+    const [before, after] = out.split('.');
+    return before + "," + (after.toString().length == 1 ? after + "0" : after)
+}

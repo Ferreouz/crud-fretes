@@ -1,5 +1,4 @@
-import { calculateFreightPrice } from "../src/logic/logic";
-import { FreightPriceRate } from "../src/logic/types";
+import { calculateFreightPrice, formatMoney } from "../src/utils/utils";
 
 const priceRateTests = [
     {
@@ -27,10 +26,35 @@ const priceRateTests = [
         }
     },
 ];
+const moneyTests = [
+    {
+        args: 400,
+        result: "400,00"
+    },
+    {
+        args: 20.5,
+        result: "20,50"
+    },
+    {
+        args: 0.9,
+        result: "0,90"
+    },
+    {
+        args: undefined,
+        result: undefined
+    },
+];
 
 test('Calculate the price and rate with default rates', () => {
     for (let i = 0; i < priceRateTests.length; i++) {
         const element = priceRateTests[i];
         expect(calculateFreightPrice(element.args.distance, element.args.vehicleWeight)).toStrictEqual(element.result);
+    }
+})
+
+test('Format money', () => {
+    for (let i = 0; i < moneyTests.length; i++) {
+        const element = moneyTests[i];
+        expect(formatMoney(element.args)).toStrictEqual(element.result);
     }
 })
