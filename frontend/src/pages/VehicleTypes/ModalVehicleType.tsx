@@ -13,7 +13,7 @@ function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, 
         event.preventDefault();
 
         const item = {
-            weight: weight || vehicle?.weight || 1,
+            weight: weight || vehicle?.weight,
             name: name || vehicle?.name || "",
         }
         switch (operation) {

@@ -2,6 +2,7 @@ import db from "../../db";
 import middleware from "../middleware";
 import type { Request, Response } from 'express';
 import isAdmin from "../isadmin";
+import { validateFormNewVehicle, validateFormNewVehicleType } from "../../utils/formValidation";
 
 export default function route(app) {
     app.get("/vehicles", middleware, async (req: Request, res: Response) => {
@@ -12,6 +13,12 @@ export default function route(app) {
     app.post("/vehicles", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
             return res.sendStatus(403);
+        }
+        const form = validateFormNewVehicle(req.body);
+        if(!form.valid) {
+            return res.status(400).json({
+                error: form.error
+            });
         }
         try {
             console.log(req.body)
@@ -75,6 +82,12 @@ export default function route(app) {
     app.post("/vehicleTypes", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
             return res.sendStatus(403);
+        }
+        const form = validateFormNewVehicleType(req.body);
+        if(!form.valid) {
+            return res.status(400).json({
+                error: form.error
+            });
         }
         try {
             console.log(req.body)
