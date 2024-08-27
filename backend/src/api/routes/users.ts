@@ -3,6 +3,7 @@ import middleware from "../middleware";
 import type { Request, Response } from 'express';
 import isAdmin from "../isadmin";
 import bcrypt from "bcrypt";
+import { validateFormNewUser } from "../../utils/formValidation";
 
 export default function route(app) {
     app.get("/users", middleware, async (req: Request, res: Response) => {
@@ -18,6 +19,13 @@ export default function route(app) {
             return res.sendStatus(403);
         }
         try {
+            const form = validateFormNewUser(req.body);
+            if(!form.valid) {
+                return res.status(400).json({
+                    error: form.error
+                });
+            }
+
             req.body.password = bcrypt.hashSync(req.body.password, 10);
             await db.users.insert(req.body);
             return res.sendStatus(201);

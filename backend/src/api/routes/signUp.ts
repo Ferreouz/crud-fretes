@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 import db from "../../db";
 import bcrypt from "bcrypt";
 import { IUser } from "../../db/users/types";
+import { validateFormNewUser } from "../../utils/formValidation";
 
 export default function route(app) {
     app.post("/auth/register", async (req, res) => {
@@ -11,10 +12,17 @@ export default function route(app) {
                 error: "Por favor, digite todos os campos",
             });
         }
+        const user = { email, password, name, type: 'driver' } as IUser;
+        const form = validateFormNewUser(user);
+        if(!form.valid) {
+            return res.status(400).json({
+                error: form.error
+            });
+        }
+
         const hashedPass = bcrypt.hashSync(password, 10);
-        console.log(req.body)
         try {
-            const user = { email, password: hashedPass, name, type: 'driver' } as IUser;
+            user.password = hashedPass;
             await db.users.create(user);
             delete user.password;
             const access_token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });

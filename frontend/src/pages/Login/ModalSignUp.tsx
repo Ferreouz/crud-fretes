@@ -26,9 +26,6 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
       email: user,
       password
     }
-    setUser('');
-    setName('');
-    setPassword('');
     axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/register", fields)
       .then(response => {
         if (response.status == 200 && response.data.access_token &&
@@ -44,6 +41,7 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
           })
         ) {
           alert("Cadastro concluido! Redirecionando...")
+          closeModal()
           navigate("/")
         }
         //
@@ -51,7 +49,6 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
       .catch(error => {
         alert(error?.response?.data?.error ? "Erro: " + error.response.data.error : "Um erro inesperado ocorreu, por favor, contate o suporte...");
       })
-    closeModal()
   }
 
   return (

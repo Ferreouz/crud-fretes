@@ -29,6 +29,7 @@ function Home() {
       return;
     }
     setUsers(await api.getUsers());
+    setModalState(false)
   }
 
   async function add(user: IUser) {
@@ -38,6 +39,7 @@ function Home() {
       return;
     }
     setUsers(await api.getUsers());
+    setModalState(false)
   }
 
   async function del(id: number) {
@@ -54,6 +56,7 @@ function Home() {
       return;
     }
     setUsers(await api.getUsers());
+    setModalState(false)
   }
 
 

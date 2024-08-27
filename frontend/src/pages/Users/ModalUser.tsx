@@ -29,7 +29,6 @@ function ModalVehicle({ opened, closeModal, operation, addUser, editUser, user }
             default:
                 break;
         }
-        close();
     }
     function close() {
         setName('');
