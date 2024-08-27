@@ -41,5 +41,6 @@ CREATE TABLE "Freights" (
     "closed_at" TIMESTAMPTZ,
     "created_at" TIMESTAMPTZ DEFAULT now(),
     "updated_at" TIMESTAMPTZ DEFAULT now(),
-    CONSTRAINT "FK_Vehicle" FOREIGN KEY ("vehicle_plate") REFERENCES "Vehicles" ("plate") ON UPDATE CASCADE ON DELETE RESTRICT
+    CONSTRAINT "FK_Vehicle" FOREIGN KEY ("vehicle_plate") REFERENCES "Vehicles" ("plate") ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT "FK_Driver" FOREIGN KEY ("driver_id") REFERENCES "Users" ("id") ON UPDATE CASCADE ON DELETE RESTRICT
 );

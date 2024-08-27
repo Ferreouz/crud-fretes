@@ -21,6 +21,21 @@ async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
     return res.rows;
 }
 
+async function getAllForDrivers(driver_id: number):Promise<Array<IFreightWithVehicle>> {
+    const res = await pool.query(`
+    Select f.*, jsonb_build_object(
+    'plate', v.plate,
+    'name', v.name,
+    'type', v.type,
+    'weight', t.weight
+    ) as vehicle FROM "Freights" as f 
+        INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
+        INNER JOIN "VehicleTypes" as t ON v.type = t.name
+        WHERE driver_id = $1 OR open = true
+        order by f.updated_at desc    
+    `, [driver_id]);
+    return res.rows;
+}
 async function update(id: number, freight: IFreight):Promise<number> {
     delete freight.id;
     const keys = Object.keys(freight);
@@ -82,5 +97,6 @@ const freights = {
     update: update,
     insert: insert,
     delete: deleteF,
+    getAllForDrivers,
 }
 export default freights;

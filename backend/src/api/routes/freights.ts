@@ -4,10 +4,17 @@ import type { Request, Response } from 'express';
 import { calculateFreightPrice, formatMoney } from "../../utils/utils";
 import isAdmin from "../isadmin";
 import { validateFormNewFreight } from "../../utils/formValidation";
+import { IFreightWithVehicle } from "../../db/freights/types";
 
 export default function route(app) {
     app.get("/freights", middleware, async (req: Request, res: Response) => {
-        const freights = await db.freights.getAllWithVehicle();
+        let freights: IFreightWithVehicle[] = [];
+        if (isAdmin(req.user)) {
+            freights = await db.freights.getAllWithVehicle();
+        } else {
+            freights = await db.freights.getAllForDrivers(req.user.id);
+        }
+        
         for (let i = 0; i < freights.length; i++) {
             const prices = calculateFreightPrice(freights[i].distance, freights[i].vehicle.weight);
 
@@ -19,11 +26,11 @@ export default function route(app) {
     })
 
     app.post("/freights", middleware, async (req: Request, res: Response) => {
-        if(!isAdmin(req.user)) {
+        if (!isAdmin(req.user)) {
             return res.sendStatus(403);
         }
         const form = validateFormNewFreight(req.body);
-        if(!form.valid) {
+        if (!form.valid) {
             return res.status(400).json({
                 error: form.error
             });
@@ -33,18 +40,18 @@ export default function route(app) {
             return res.sendStatus(201);
         } catch (e) {
             console.log(e, typeof e)
-            if('code' in e && e.code == '23503') {
+            if ('code' in e && e.code == '23503') {
                 return res.status(400).json({
                     error: "Escolha uma placa válida"
                 });
             }
-            
+
             return res.sendStatus(400);
         }
     })
 
     app.put("/freights/:id", middleware, async (req: Request, res: Response) => {
-        if(!isAdmin(req.user)) {
+        if (!isAdmin(req.user)) {
             return res.sendStatus(403);
         }
         try {
@@ -56,7 +63,7 @@ export default function route(app) {
     })
 
     app.delete("/freights/:id", middleware, async (req: Request, res: Response) => {
-        if(!isAdmin(req.user)) {
+        if (!isAdmin(req.user)) {
             return res.sendStatus(403);
         }
         try {
