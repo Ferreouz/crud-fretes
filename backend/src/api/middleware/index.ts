@@ -7,6 +7,8 @@ export default function middleware(req, res, next) {
     const token = req.headers.authorization.split(' ')[1];
     try {
         const user = jwt.verify(token, process.env.JWT_SECRET);
+        delete user.password;
+        delete user.active;
         req.user = user;
         next();
     } catch (err) {

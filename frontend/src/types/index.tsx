@@ -36,4 +36,5 @@ export interface IUser {
     created_at?: Date,
     updated_at?: Date,
     password?: string,
+    type?: string,
 }

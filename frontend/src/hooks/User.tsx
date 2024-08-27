@@ -3,12 +3,17 @@ import axios, { AxiosError } from "axios";
 import getCookie from "../utils/getCookie";
 
 export async function getUsers(): Promise<IUser[]> {
-  const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
-    headers: {
-      Authorization: `Bearer ${getCookie("_auth")}`
-    }
-  });
-  return res.data;
+  try {
+    const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/users", {
+      headers: {
+        Authorization: `Bearer ${getCookie("_auth")}`
+      }
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e)
+  }
+  return [];
 }
 
 export async function updateUser(user: IUser, id: number): Promise<{ success: boolean, error?: string }> {
@@ -23,6 +28,7 @@ export async function updateUser(user: IUser, id: number): Promise<{ success: bo
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -39,6 +45,7 @@ export async function createUser(user: IUser): Promise<{ success: boolean, error
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -55,6 +62,7 @@ export async function deleteUser(id: number): Promise<{ success: boolean, error?
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }

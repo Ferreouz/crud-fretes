@@ -9,10 +9,11 @@ import Row from "react-bootstrap/Row";
 
 interface PropsModalSignUp {
   opened: boolean,
-  closeModal: () => void
+  closeModal: () => void,
+  onLogin: () => Promise<void>,
 }
 
-function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
+function ModalSignUp({ opened, closeModal, onLogin }: PropsModalSignUp) {
   const [user, setUser] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -27,7 +28,7 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
       password
     }
     axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/register", fields)
-      .then(response => {
+      .then(async response => {
         if (response.status == 200 && response.data.access_token &&
           signIn({
             auth: {
@@ -40,6 +41,7 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
             }
           })
         ) {
+          await onLogin();
           alert("Cadastro concluido! Redirecionando...")
           closeModal()
           navigate("/")

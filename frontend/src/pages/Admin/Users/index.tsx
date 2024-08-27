@@ -3,7 +3,7 @@ import Card from "../../../components/MCard";
 import { Button } from "react-bootstrap";
 import { IUser } from "../../../types";
 import * as api from "../../../hooks/User";
-import MNavbarCompany from "../../../components/MNavbarCompany";
+import MNavbarCompany from "../../../components/MNavbarAdmin";
 import { Col } from 'react-bootstrap';
 import ModalVehicleType from "./ModalUser";
 import { PropsModalUser } from "./types";

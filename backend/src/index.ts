@@ -6,7 +6,6 @@ import cors from "cors";
 import loginRoute from "./api/routes/login";
 import vehicleRoute from "./api/routes/vehicles";
 import freightRoute from "./api/routes/freights";
-import signUpRoute from "./api/routes/signUp";
 import userRoute from "./api/routes/users";
 
 dotenv.config();
@@ -20,7 +19,6 @@ app.use(cors({
 loginRoute(app);
 vehicleRoute(app);
 freightRoute(app);
-signUpRoute(app);
 userRoute(app);
 
 

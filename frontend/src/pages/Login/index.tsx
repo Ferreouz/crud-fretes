@@ -4,7 +4,10 @@ import axios from 'axios';
 import useSignIn from "react-auth-kit/hooks/useSignIn";
 import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+interface LoginProps {
+    onLogin: () => Promise<void>;
+}
+const Login = ({onLogin}: LoginProps) => {
     const [user, setUser] = useState('');
     const [password, setPassword] = useState('');
     const [modalOpened, setModalOpened] = useState(false);
@@ -20,7 +23,7 @@ const Login = () => {
         setUser('');
         setPassword('');
         axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/login", fields)
-            .then(response => {
+            .then(async response => {
                 if (response.status == 200 && response.data.access_token &&
                     signIn({
                         auth: {
@@ -33,6 +36,7 @@ const Login = () => {
                         }
                     })
                 ) {
+                    await onLogin();
                     alert("Logado! Redirecionando...")
                     navigate("/")
                 }
@@ -69,7 +73,7 @@ const Login = () => {
             </div>
         </div>
         <div className='container'>
-        <ModalSignUp opened={modalOpened} closeModal={() => setModalOpened(false)} />
+        <ModalSignUp opened={modalOpened} closeModal={() => setModalOpened(false)} onLogin={onLogin}/>
         </div>
         </>
     )

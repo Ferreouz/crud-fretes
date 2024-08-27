@@ -3,12 +3,17 @@ import { IFreight } from "../types";
 import getCookie from "../utils/getCookie";
 
 export async function getFreights(): Promise<IFreight[]> {
-    const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/freights", {
-        headers: {
-            Authorization: `Bearer ${getCookie("_auth")}`
-        }
-    });
-    return res.data;
+    try {
+        const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/freights", {
+            headers: {
+                Authorization: `Bearer ${getCookie("_auth")}`
+            }
+        });
+        return res.data;
+    } catch (e) {
+        console.log(e)
+    }
+    return [];
 }
 
 export async function updateFreight(freight: IFreight): Promise<{ success: boolean, error?: string }> {
@@ -23,6 +28,7 @@ export async function updateFreight(freight: IFreight): Promise<{ success: boole
         if (e instanceof AxiosError) {
             return { success: false, error: e?.response?.data?.error }
         }
+        console.log(e)
     }
     return { success: false }
 }
@@ -39,6 +45,7 @@ export async function createFreight(freight: IFreight): Promise<{ success: boole
         if (e instanceof AxiosError) {
             return { success: false, error: e?.response?.data?.error }
         }
+        console.log(e)
     }
     return { success: false }
 }
@@ -55,6 +62,7 @@ export async function deleteFreight(id: number): Promise<{ success: boolean, err
         if (e instanceof AxiosError) {
             return { success: false, error: e?.response?.data?.error }
         }
+        console.log(e)
     }
     return { success: false }
 }

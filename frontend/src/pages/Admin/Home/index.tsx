@@ -5,7 +5,7 @@ import { IFreight } from "../../../types";
 import { createFreight, getFreights, updateFreight, deleteFreight } from "../../../hooks/Freight";
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
-import MNavbarCompany from "../../../components/MNavbarCompany";
+import MNavbarCompany from "../../../components/MNavbarAdmin";
 import { Col } from 'react-bootstrap';
 function Home() {
   const [freights, setFreights] = useState<IFreight[]>([]);

@@ -3,12 +3,17 @@ import axios, { AxiosError } from "axios";
 import getCookie from "../utils/getCookie";
 
 export async function getVehicles(): Promise<IVehicle[]> {
-  const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicles", {
-    headers: {
-      Authorization: `Bearer ${getCookie("_auth")}`
-    }
-  });
-  return res.data;
+  try {
+    const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicles", {
+      headers: {
+        Authorization: `Bearer ${getCookie("_auth")}`
+      }
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e)
+  }
+  return [];
 }
 
 export async function updateVehicle(vehicle: IVehicle, oldPlate: string): Promise<{ success: boolean, error?: string }> {
@@ -23,6 +28,7 @@ export async function updateVehicle(vehicle: IVehicle, oldPlate: string): Promis
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -39,6 +45,7 @@ export async function createVehicle(vehicle: IVehicle): Promise<{ success: boole
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -55,17 +62,24 @@ export async function deleteVehicle(plate: string): Promise<{ success: boolean, 
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
 
 export async function getVehicleTypes(): Promise<IVehicleType[]> {
-  const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicleTypes", {
-    headers: {
-      Authorization: `Bearer ${getCookie("_auth")}`
-    }
-  });
-  return res.data;
+  try {
+    const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicleTypes", {
+      headers: {
+        Authorization: `Bearer ${getCookie("_auth")}`
+      }
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e)
+  }
+  return [];
+
 }
 
 export async function updateVehicleType(vehicle: IVehicleType, oldName: string): Promise<{ success: boolean, error?: string }> {
@@ -80,6 +94,7 @@ export async function updateVehicleType(vehicle: IVehicleType, oldName: string):
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -96,6 +111,7 @@ export async function createVehicleType(vehicle: IVehicleType): Promise<{ succes
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
@@ -112,6 +128,7 @@ export async function deleteVehicleType(name: string): Promise<{ success: boolea
     if (e instanceof AxiosError) {
       return { success: false, error: e?.response?.data?.error }
     }
+    console.log(e)
   }
   return { success: false }
 }
