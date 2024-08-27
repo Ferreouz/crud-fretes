@@ -1,7 +1,7 @@
 import db from "../../db";
 import middleware from "../middleware";
 import type { Request, Response } from 'express';
-import { calculateFreightPrice } from "../../utils/utils";
+import { calculateFreightPrice, formatMoney } from "../../utils/utils";
 import isAdmin from "../isadmin";
 
 export default function route(app) {
@@ -10,8 +10,8 @@ export default function route(app) {
         for (let i = 0; i < freights.length; i++) {
             const prices = calculateFreightPrice(freights[i].distance, freights[i].vehicle.weight);
 
-            freights[i].price = prices.price;
-            freights[i].rate = prices.rate;
+            freights[i].price = formatMoney(prices.price);
+            freights[i].rate = formatMoney(prices.rate);
         }
 
         return res.send(freights);

@@ -7,8 +7,8 @@ export interface Vehicle {
 export interface Freight {
     id?: number,
     product_name?: string,
-    price?: number,
-    rate?: number,
+    price?: number | string,
+    rate?: number | string,
     driver_id?: number,
     vehicle?: Vehicle,
     vehicle_plate?: string,

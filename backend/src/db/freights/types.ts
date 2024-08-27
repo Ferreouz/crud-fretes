@@ -6,11 +6,11 @@ export interface IFreight {
     /**
     * Calculated
     */
-    price?: number,
+    price?: number | string,
     /**
     * Calculated
     */
-    rate?: number,
+    rate?: number | string,
     driver_id?: number,
     vehicle_plate: string,
     distance: number,
