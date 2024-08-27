@@ -39,7 +39,7 @@ const Login = () => {
                 //
             })
             .catch(error => {
-                alert(error?.response?.data?.message ? "Erro: " + error.response.data.message : "Um erro inesperado ocorreu, por favor, contate o suporte...");
+                alert(error?.response?.data?.error ? "Erro: " + error.response.data.error : "Um erro inesperado ocorreu, por favor, contate o suporte...");
             })
         console.log("Enviado", user, password)
     }
@@ -53,10 +53,10 @@ const Login = () => {
             <form onSubmit={handleSubmit}>
                 <h3>Acesse o sistema</h3>
                 <div>
-                    <input type="email" placeholder='Seu Email' onChange={(e) => setUser(e.target.value)} />
+                    <input type="email" value={user} placeholder='Seu Email' onChange={(e) => setUser(e.target.value)} />
                 </div>
                 <div>
-                    <input type="password" placeholder='Sua Senha' onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" value={password} placeholder='Sua Senha' onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <br />
                 <button>Entrar</button>

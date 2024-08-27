@@ -10,4 +10,4 @@
 
 ## Bugs
 
- - When user logs, freights are now shown
+ - When user logs, freights are not shown (DONE)

@@ -6,7 +6,7 @@ export default function route(app) {
     app.post("/auth/login", async (req, res) => {
         const { email, password } = req.body;
         if (!email || !password) {
-            return res.status(403).json({
+            return res.status(401).json({
                 error: "Credenciais Inválidas",
             });
         }
@@ -21,7 +21,7 @@ export default function route(app) {
             return res.json({ access_token });
         }
 
-        return res.status(403).json({
+        return res.status(401).json({
             error: "Credenciais Inválidas",
         });
     });
