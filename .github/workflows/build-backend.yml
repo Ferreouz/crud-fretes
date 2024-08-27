@@ -15,3 +15,4 @@ jobs:
 
       - run: cd backend && npm install
       - run: cd backend && npm run lint && npm run build
+      - run: cd backend && npm run test

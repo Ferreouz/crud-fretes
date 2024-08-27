@@ -5,7 +5,7 @@ export function calculateFreightPrice(distance: number, vehicleWeight: number): 
 
     let tax = 0;
     if(distance > 500) {
-        tax = 0.75;
+        tax = 0.075;
     }else if(distance > 200) {
         tax = 0.1;
     }else if(distance > 100) {
