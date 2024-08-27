@@ -1,15 +1,7 @@
-import {Vehicle} from "../types"
+import { Vehicle } from "../types";
+import axios from "axios";
+
 export async function getVehicles(): Promise<Vehicle[]> {
-    return [
-        {
-          plate: "XXX-11",
-          name: "Caminhao X",
-          type: "Caminhão"
-        },
-        {
-          plate: "XXX-123",
-          name: "Optimus Prime",
-          type: "Furgão"
-        },
-    ]
+  const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicles");
+  return res.data;
 }

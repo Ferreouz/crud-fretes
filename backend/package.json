@@ -28,7 +28,9 @@
   },
   "dependencies": {
     "@types/pg": "^8.11.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "pg": "^8.12.0",
     "pg-pool": "^3.6.2"
   }

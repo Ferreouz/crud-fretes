@@ -27,12 +27,12 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
     const choosenVehicle = vehicles.filter((item) => item.plate == vehiclePlate).pop() as Vehicle;
     switch (operation) {
       case "create":
-        addFreight({productName, vehicle: choosenVehicle, distance})
+        addFreight({product_name: productName, vehicle_plate: choosenVehicle.plate, distance})
         break;
       case "update":
         editFreight({
-          productName: productName || freight?.productName, 
-          vehicle: choosenVehicle || freight?.vehicle, 
+          product_name: productName || freight?.product_name, 
+          vehicle_plate: choosenVehicle?.plate || freight?.vehicle?.plate, 
           distance: distance || freight?.distance, 
           id: freight?.id
         })
@@ -40,6 +40,9 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
       default:
         break;
     }
+    close();
+  }
+  function close() {
     setProductName('');
     setVehiclePlate('');
     setDistance(0);
@@ -47,7 +50,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
   }
   return (
     <>
-      <Modal show={opened} onHide={closeModal}>
+      <Modal show={opened} onHide={close}>
         <Form onSubmit={(event) => handleSubmit(event)}>
           <Modal.Header closeButton>
             <Modal.Title>
@@ -58,7 +61,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
             <Row>
               <Form.Label >Nome do produto</Form.Label>
               <Form.Control
-                value={productName||freight?.productName}
+                value={productName||freight?.product_name}
                 type="text"
                 onChange={(e) => setProductName(e.target.value)}
               />
@@ -70,7 +73,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
               <Form.Select  onChange={(e) => setVehiclePlate(e.target.value)}>
                 <option>Selecionar</option>
                 {vehicles?.map((item: Vehicle) => (
-                  <option value={item.plate} selected={freight?.vehicle?.plate == item.plate}>{item.plate} {item.name}</option>
+                  <option key={item.plate} value={item.plate} selected={freight?.vehicle?.plate == item.plate}>{item.plate} {item.name}</option>
                 ))}
               </Form.Select>
             </Row>
@@ -78,14 +81,14 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
             <Row>
               <Form.Label >Distância (em Km)</Form.Label>
               <Form.Control
-                value={freight?.distance}
+                value={distance||freight?.distance}
                 type="number"
                 onChange={(e) => setDistance(Number(e.target.value))}
               />
             </Row>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={closeModal}>
+            <Button variant="secondary" onClick={close}>
               Fechar
             </Button>
             <Button variant="primary" type="submit">

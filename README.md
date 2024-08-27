@@ -1,6 +1,7 @@
 # TODO
-- Frontend
-- Backend
-- Tests
+- CRUD Vehicles
+- Edit Vehicles Weights 
+- Vision of drivers
+- Create tests logic
 - Install on Docker
-- Create live demo
+- Publish live demo

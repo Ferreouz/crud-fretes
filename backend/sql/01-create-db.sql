@@ -26,10 +26,11 @@ CREATE TABLE "Users" (
 
 CREATE TABLE "Freights" (
     "id" serial primary key NOT NULL,
+    "product_name" VARCHAR(255),
     "driver_id" INT,
     "distance" INT NOT NULL,
     "vehicle_plate" CHAR(8) NOT NULL,
-    "opened" boolean DEFAULT false,
+    "open" boolean DEFAULT true,
     "closed_at" TIMESTAMPTZ,
     "created_at" TIMESTAMPTZ DEFAULT now(),
     "updated_at" TIMESTAMPTZ DEFAULT now()

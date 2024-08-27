@@ -1,5 +1,8 @@
-import moment from 'moment'
+import moment from 'moment';
+import Card from 'react-bootstrap/Card';
+
 interface Props {
+  // key: number,
   title: string,
   subtitle: string,
   text: string[],
@@ -10,7 +13,6 @@ interface Props {
   id?: number,
   lastUpdate?: Date,
 }
-import Card from 'react-bootstrap/Card';
 
 export default function MCard(arg: Props) {
   return (
@@ -18,8 +20,8 @@ export default function MCard(arg: Props) {
       <Card.Body>
         <Card.Title>{arg.title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{arg.subtitle}</Card.Subtitle>
-        {arg.text.map((text) => (
-        <Card.Text>
+        {arg.text.map((text, index) => (
+        <Card.Text key={index}>
              {text} 
         </Card.Text>
         ))}
