@@ -1,7 +1,7 @@
 # TODO
 - CRUD Vehicles (DONE)
 - Validation of FRONTEND fields
-- Message of errors DB: duplicate key; Freight relation with Vehicle on delete (DONE); fields missing
+- Message of errors DB: duplicate key (DONE); Freight relation with Vehicle on delete (DONE); fields missing
 - CRUD Users (DONE) 
 - Auth Backend (DONE)
 - Edit Vehicles Weights (DONE) 

@@ -49,7 +49,7 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
         //
       })
       .catch(error => {
-        alert(error?.response?.data?.message ? "Erro: " + error.response.data.message : "Um erro inesperado ocorreu, por favor, contate o suporte...");
+        alert(error?.response?.data?.error ? "Erro: " + error.response.data.error : "Um erro inesperado ocorreu, por favor, contate o suporte...");
       })
     closeModal()
   }

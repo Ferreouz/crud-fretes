@@ -23,6 +23,11 @@ export default function route(app) {
             return res.sendStatus(201);
         } catch (e) {
             console.log(e)
+            if('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Já existe usuário com este email, por favor digite outro"
+                });
+            }
             return res.sendStatus(400);
         }
     })
@@ -39,7 +44,13 @@ export default function route(app) {
             return res.sendStatus(200);
         } catch (e) {
             console.log(e)
+            if('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Já existe usuário com este email, por favor digite outro"
+                });
+            }
             return res.sendStatus(400);
+            
         }
     })
 

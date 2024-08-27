@@ -21,7 +21,13 @@ export default function route(app) {
             return res.status(200).json({
                 access_token,
             });
-        } catch (error) {
+        } catch (e) {
+            console.log(e)
+            if('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Já existe um usuario com este email, por favor digite outro"
+                });
+            }
             return res.status(400).json({
                 error: "Ocorreu um erro ao criar seu usuário",
             });
