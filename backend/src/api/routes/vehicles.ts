@@ -9,11 +9,6 @@ export default function route(app) {
         return res.send(vehicles);
     });
 
-    app.get("/vehicleTypes", middleware, async (req: Request, res: Response) => {
-        const types = await db.vehicles.types.getAll();
-        return res.send(types);
-    });
-
     app.post("/vehicles", middleware, async (req: Request, res: Response) => {
         if(!isAdmin(req.user)) {
             return res.sendStatus(403);
@@ -55,6 +50,59 @@ export default function route(app) {
             if('code' in e && e.code == '23503') {
                 return res.status(400).json({
                     error: "Existe frete(s) usando este veículo, altere ou apague o frete para poder apagar este veículo"
+                });
+            }
+            return res.sendStatus(400);
+        }
+    })
+
+    //VEHICLE TYPES
+    app.get("/vehicleTypes", middleware, async (req: Request, res: Response) => {
+        const types = await db.vehicles.types.getAll();
+        return res.send(types);
+    });
+
+    app.post("/vehicleTypes", middleware, async (req: Request, res: Response) => {
+        if(!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            console.log(req.body)
+            await db.vehicles.types.insert(req.body);
+            return res.sendStatus(201);
+        } catch (e) {
+            console.log(e)
+            return res.sendStatus(400);
+        }
+    })
+
+    app.put("/vehicleTypes/:name", middleware, async (req: Request, res: Response) => {
+        if(!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            console.log(req.body)
+            await db.vehicles.types.update(req.params.name, req.body);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e)
+            return res.sendStatus(400);
+        }
+    })
+
+    app.delete("/vehicleTypes/:name", middleware, async (req: Request, res: Response) => {
+        if(!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            console.log(req.body)
+            await db.vehicles.types.delete(req.params.name);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e, typeof e)
+            if('code' in e && e.code == '23503') {
+                return res.status(400).json({
+                    error: "Existe veiculo(s) deste tipo, altere ou apague ele(s) para poder apagar este tipo"
                 });
             }
             return res.sendStatus(400);

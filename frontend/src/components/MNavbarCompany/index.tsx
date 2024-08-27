@@ -14,6 +14,7 @@ function MNavbarCompany() {
                         <Nav className="me-auto">
                             <Nav.Link onClick={() => navigate("/")}>Fretes</Nav.Link>
                             <Nav.Link onClick={() => navigate("/veiculos")}>Veiculos</Nav.Link>
+                            <Nav.Link onClick={() => navigate("/veiculos-tipos")}>Tipos de Veiculo</Nav.Link>
                             <Nav.Link onClick={() => navigate("/usuarios")}>Usuarios</Nav.Link>
                         </Nav>
                     </Navbar.Collapse>

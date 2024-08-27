@@ -22,5 +22,7 @@ export interface Freight {
 }
 export interface VehicleType {
     name: string,
-    weight?: number
+    weight?: number,
+    created_at?: Date,
+    updated_at?: Date,
 }

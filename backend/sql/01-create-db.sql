@@ -5,6 +5,8 @@ CREATE DATABASE freights;
 CREATE TABLE "VehicleTypes" (
     "name" VARCHAR(255) NOT NULL,
     "weight" INT NOT NULL,
+    "created_at" TIMESTAMPTZ DEFAULT now(),
+    "updated_at" TIMESTAMPTZ DEFAULT now(),
     CONSTRAINT "PK_VehicleTypes" PRIMARY KEY ("name")
 );
 

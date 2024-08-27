@@ -4,7 +4,7 @@
 - Message of errors DB: duplicate key; Freight relation with Vehicle on delete (DONE); fields missing
 - CRUD Users 
 - Auth Backend (DONE)
-- Edit Vehicles Weights 
+- Edit Vehicles Weights (DONE) 
 - Vision of drivers
 - Create tests logic (DONE)
 - Install on Docker
