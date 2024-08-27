@@ -6,6 +6,7 @@ import { createFreight, getFreights, updateFreight, deleteFreight } from "../../
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
 import MNavbarCompany from "../../components/MNavbarCompany";
+import { Col } from 'react-bootstrap';
 function Home() {
   const [freights, setFreights] = useState<Freight[]>([]);
   const [showModal, setModalState] = useState(false);
@@ -21,15 +22,15 @@ function Home() {
   }, []);
 
   async function update(newFreight: Freight) {
-    if(!await updateFreight(newFreight)) {
+    if (!await updateFreight(newFreight)) {
       alert("Erro ocorreu ao tentar atualizar o Frete, por favor, tente novamente")
       return;
     }
     setFreights(await getFreights());
   }
-  
+
   async function add(newFreight: Freight) {
-    if(!await createFreight(newFreight)) {
+    if (!await createFreight(newFreight)) {
       alert("Erro ocorreu ao tentar criar o Frete, por favor, tente novamente")
       return;
     }
@@ -37,14 +38,14 @@ function Home() {
   }
 
   async function del(id: number | undefined) {
-    if(!id) {
+    if (!id) {
       alert("Ocorreu um erro inesperado, por favor, contate o suporte")
       return;
     }
     if (!confirm('Deseja realmente APAGAR este Frete?')) {
       return;
-    } 
-    if(!await deleteFreight(id)) {
+    }
+    if (!await deleteFreight(id)) {
       alert("Erro ocorreu ao tentar apagar o Frete, por favor, tente novamente")
       return;
     }
@@ -73,24 +74,27 @@ function Home() {
             </Button>
           </div>
         </div>
+        <br />
         <div className="container text-center">
-          <div className="row">
+          <div className="row gy-5">
             {freights?.map((item: Freight) => (
-              <Card
-                key={item.id}
-                title={item.product_name || ""}
-                subtitle={"R$" + item.price}
-                text={[`Veículo: ${item.vehicle?.plate}`, `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`]}
-                onEdit={() => {
-                  setOperation("update");
-                  setFreightForEdition(item);
-                  setModalState(true);
-                }}
-                onDelete={() => del(item.id)}
-                canEdit={item.open == true}
-                canDelete={item.open == true}
-                lastUpdate={item.updated_at}
-              />
+              <Col key={item.id}>
+                <Card
+                  key={item.id}
+                  title={item.product_name || ""}
+                  subtitle={"R$" + item.price}
+                  text={[`Veículo: ${item.vehicle?.plate}`, `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`]}
+                  onEdit={() => {
+                    setOperation("update");
+                    setFreightForEdition(item);
+                    setModalState(true);
+                  }}
+                  onDelete={() => del(item.id)}
+                  canEdit={item.open == true}
+                  canDelete={item.open == true}
+                  lastUpdate={item.updated_at}
+                />
+              </Col>
             ))}
           </div>
         </div>

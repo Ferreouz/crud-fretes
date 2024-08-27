@@ -7,7 +7,7 @@ function MNavbarCompany() {
     const navigate = useNavigate();
     return (
         <>
-            <Navbar expand="lg" className="bg-body-tertiary">
+            <Navbar sticky='top' expand="lg" className="primary">
                 <Container>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

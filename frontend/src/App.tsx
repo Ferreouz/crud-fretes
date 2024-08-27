@@ -16,7 +16,6 @@ const store = createStore({
 function App() {
   return (
     <>
-      <div className='container'>
         <AuthProvider store={store}>
           <Routes>
             <Route
@@ -30,7 +29,6 @@ function App() {
             <Route path="/login" element={<Login />}></Route>
           </Routes>
         </AuthProvider>
-      </div>
     </>
   )
 }
