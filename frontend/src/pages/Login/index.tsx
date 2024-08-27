@@ -15,7 +15,7 @@ const Login = () => {
         event.preventDefault();
         const fields = {
             email: user,
-            senha: password,
+            password,
         }
         setUser('');
         setPassword('');

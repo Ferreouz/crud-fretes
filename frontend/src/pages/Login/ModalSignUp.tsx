@@ -16,22 +16,19 @@ function ModalSignUp({ opened, closeModal }: PropsModalSignUp) {
   const [user, setUser] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('');
   const signIn = useSignIn();
   const navigate = useNavigate();
 
   function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
     const fields = {
-      nome: name,
+      name,
       email: user,
-      senha: password,
-      userType
+      password
     }
     setUser('');
     setName('');
     setPassword('');
-    setUserType('');
     axios.post(import.meta.env.VITE_BACKEND_URL + "/auth/register", fields)
       .then(response => {
         if (response.status == 200 && response.data.access_token &&

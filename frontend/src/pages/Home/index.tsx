@@ -6,9 +6,7 @@ import { createFreight, getFreights, updateFreight, deleteFreight } from "../../
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
 import MNavbarCompany from "../../components/MNavbarCompany";
-
 function Home() {
-
   const [freights, setFreights] = useState<Freight[]>([]);
   const [showModal, setModalState] = useState(false);
   const [operation, setOperation] = useState('');
