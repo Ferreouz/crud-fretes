@@ -20,14 +20,17 @@ export default function MCard(arg: Props) {
       <Card.Body>
         <Card.Title>{arg.title}</Card.Title>
         <Card.Subtitle className="mb-2 text-muted">{arg.subtitle}</Card.Subtitle>
-        {arg.text.map((text, index) => (
-        <Card.Text key={index}>
-             {text} 
-        </Card.Text>
-        ))}
+        <Card>
+          {arg.text.map((text, index) => (
+          <Card.Text key={index}>
+              {text} 
+          </Card.Text>
+          ))}
+        </Card>
+        <br />
         <Card.Link className={"btn btn-danger" + (arg.canDelete ? "" : " disabled")} onClick={arg.onDelete}>Apagar</Card.Link>
         <Card.Link className={"btn" + (arg.canEdit ? "" : " disabled")} onClick={arg.onEdit}>Editar</Card.Link>
-        <br></br>
+        <br />
         <small className="text-info">Última alteração {moment(arg.lastUpdate).format("DD/MM HH:mm")}</small>
       </Card.Body>
     </Card>

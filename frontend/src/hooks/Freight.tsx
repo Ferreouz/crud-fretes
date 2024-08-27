@@ -3,7 +3,6 @@ import { Freight } from "../types";
 import getCookie from "../utils/getCookie";
 
 export async function getFreights(): Promise<Freight[]> {
-    console.log(getCookie("_auth"))
     const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/freights", {
         headers: {
             Authorization: `Bearer ${getCookie("_auth")}`

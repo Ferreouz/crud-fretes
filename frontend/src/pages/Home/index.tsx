@@ -81,9 +81,12 @@ function Home() {
               <Col key={item.id}>
                 <Card
                   key={item.id}
-                  title={item.product_name || ""}
-                  subtitle={"R$" + item.price}
-                  text={[`Veículo: ${item.vehicle?.plate}`, `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`]}
+                  title={"Produto: " + (item.product_name || "")}
+                  subtitle={"R$" + item.price + ` + ${item.rate} (taxa)`}
+                  text={[
+                    `Veículo: ${item.vehicle?.plate} ${item.distance}Km`, 
+                    `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`, 
+                  ]}
                   onEdit={() => {
                     setOperation("update");
                     setFreightForEdition(item);
