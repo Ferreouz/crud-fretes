@@ -1,10 +1,10 @@
-import { Vehicle } from '../../types';
+import { IVehicle } from '../../types';
 
 export interface PropsModalVehicle {
     opened: boolean,
     operation: "create" | "update",
     closeModal: () => void,
-    addVehicle: (Freight: Vehicle) => void,
-    editVehicle: (Freight: Vehicle, oldPlate: string) => void,
-    vehicle?: Vehicle
+    addVehicle: (Freight: IVehicle) => void,
+    editVehicle: (Freight: IVehicle, oldPlate: string) => void,
+    vehicle?: IVehicle
 }

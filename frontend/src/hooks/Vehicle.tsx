@@ -1,8 +1,8 @@
-import { Vehicle, VehicleType } from "../types";
+import { IVehicle, IVehicleType } from "../types";
 import axios, { AxiosError } from "axios";
 import getCookie from "../utils/getCookie";
 
-export async function getVehicles(): Promise<Vehicle[]> {
+export async function getVehicles(): Promise<IVehicle[]> {
   const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicles", {
     headers: {
       Authorization: `Bearer ${getCookie("_auth")}`
@@ -11,7 +11,7 @@ export async function getVehicles(): Promise<Vehicle[]> {
   return res.data;
 }
 
-export async function updateVehicle(vehicle: Vehicle, oldPlate: string): Promise<{ success: boolean, error?: string }> {
+export async function updateVehicle(vehicle: IVehicle, oldPlate: string): Promise<{ success: boolean, error?: string }> {
   try {
     await axios.put(import.meta.env.VITE_BACKEND_URL + "/vehicles/" + oldPlate, vehicle, {
       headers: {
@@ -27,7 +27,7 @@ export async function updateVehicle(vehicle: Vehicle, oldPlate: string): Promise
   return { success: false }
 }
 
-export async function createVehicle(vehicle: Vehicle): Promise<{ success: boolean, error?: string }> {
+export async function createVehicle(vehicle: IVehicle): Promise<{ success: boolean, error?: string }> {
   try {
     await axios.post(import.meta.env.VITE_BACKEND_URL + "/vehicles", vehicle, {
       headers: {
@@ -59,7 +59,7 @@ export async function deleteVehicle(plate: string): Promise<{ success: boolean, 
   return { success: false }
 }
 
-export async function getVehicleTypes(): Promise<VehicleType[]> {
+export async function getVehicleTypes(): Promise<IVehicleType[]> {
   const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/vehicleTypes", {
     headers: {
       Authorization: `Bearer ${getCookie("_auth")}`
@@ -68,7 +68,7 @@ export async function getVehicleTypes(): Promise<VehicleType[]> {
   return res.data;
 }
 
-export async function updateVehicleType(vehicle: VehicleType, oldName: string): Promise<{ success: boolean, error?: string }> {
+export async function updateVehicleType(vehicle: IVehicleType, oldName: string): Promise<{ success: boolean, error?: string }> {
   try {
     await axios.put(import.meta.env.VITE_BACKEND_URL + "/vehicleTypes/" + oldName, vehicle, {
       headers: {
@@ -84,7 +84,7 @@ export async function updateVehicleType(vehicle: VehicleType, oldName: string): 
   return { success: false }
 }
 
-export async function createVehicleType(vehicle: VehicleType): Promise<{ success: boolean, error?: string }> {
+export async function createVehicleType(vehicle: IVehicleType): Promise<{ success: boolean, error?: string }> {
   try {
     await axios.post(import.meta.env.VITE_BACKEND_URL + "/vehicleTypes", vehicle, {
       headers: {

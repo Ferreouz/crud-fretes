@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { Vehicle } from '../../types';
+import { IVehicle } from '../../types';
 import { getVehicles } from '../../hooks/Vehicle';
 import { PropsModalFreight } from './types';
 
@@ -11,7 +11,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
   const [productName, setProductName] = useState("");
   const [vehiclePlate, setVehiclePlate] = useState("");
   const [distance, setDistance] = useState(0);
-  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [vehicles, setVehicles] = useState<IVehicle[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,7 +24,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
   function handleSubmit(event: SyntheticEvent) {
     event.preventDefault();
 
-    const choosenVehicle = vehicles.filter((item) => item.plate == vehiclePlate).pop() as Vehicle;
+    const choosenVehicle = vehicles.filter((item) => item.plate == vehiclePlate).pop() as IVehicle;
     const item = {
       product_name: productName || freight?.product_name,
       vehicle_plate: choosenVehicle?.plate || freight?.vehicle?.plate,
@@ -74,7 +74,7 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
               <Form.Label >Veiculo</Form.Label>
               <Form.Select value={freight?.vehicle?.plate} onChange={(e) => setVehiclePlate(e.target.value)}>
                 <option>Selecionar</option>
-                {vehicles?.map((item: Vehicle) => (
+                {vehicles?.map((item: IVehicle) => (
                   <option key={item.plate} value={item.plate} >{item.plate} {item.name}</option>
                 ))}
               </Form.Select>

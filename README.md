@@ -2,7 +2,7 @@
 - CRUD Vehicles (DONE)
 - Validation of FRONTEND fields
 - Message of errors DB: duplicate key; Freight relation with Vehicle on delete (DONE); fields missing
-- CRUD Users 
+- CRUD Users (DONE) 
 - Auth Backend (DONE)
 - Edit Vehicles Weights (DONE) 
 - Vision of drivers

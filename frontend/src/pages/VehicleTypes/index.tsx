@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Card from "../../components/MCard";
 import { Button } from "react-bootstrap";
-import { VehicleType } from "../../types";
+import { IVehicleType } from "../../types";
 import * as api from "../../hooks/Vehicle";
 import MNavbarCompany from "../../components/MNavbarCompany";
 import { Col } from 'react-bootstrap';
@@ -9,10 +9,10 @@ import ModalVehicleType from "./ModalVehicleType";
 import { PropsModalVehicleType } from "./types";
 
 function Home() {
-  const [vehicleTypes, setVehicleTypes] = useState<VehicleType[]>([]);
+  const [vehicleTypes, setVehicleTypes] = useState<IVehicleType[]>([]);
   const [showModal, setModalState] = useState(false);
   const [operation, setOperation] = useState('');
-  const [vehicleForEdition, setVehicleForEdition] = useState<VehicleType>();
+  const [vehicleForEdition, setVehicleForEdition] = useState<IVehicleType>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,7 +22,7 @@ function Home() {
     fetchData();
   }, []);
 
-  async function update(newVehicle: VehicleType, oldName: string) {
+  async function update(newVehicle: IVehicleType, oldName: string) {
     const res = await api.updateVehicleType(newVehicle, oldName)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar atualizar o tipo do veiculo, por favor, tente novamente")
@@ -31,7 +31,7 @@ function Home() {
     setVehicleTypes(await api.getVehicleTypes());
   }
 
-  async function add(newVehicle: VehicleType) {
+  async function add(newVehicle: IVehicleType) {
     const res = await api.createVehicleType(newVehicle)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar criar o tipo do veiculo, por favor, tente novamente")
@@ -62,8 +62,8 @@ function Home() {
       <MNavbarCompany />
       <div className="container">
         <ModalVehicleType opened={showModal} closeModal={() => setModalState(false)} vehicle={vehicleForEdition}
-          addVehicle={(newVehicle: VehicleType) => add(newVehicle)}
-          editVehicle={(newVehicle: VehicleType, oldPlate: string) => update(newVehicle, oldPlate)}
+          addVehicle={(newVehicle: IVehicleType) => add(newVehicle)}
+          editVehicle={(newVehicle: IVehicleType, oldPlate: string) => update(newVehicle, oldPlate)}
           operation={operation as PropsModalVehicleType["operation"]}
         />
         <div className="d-flex justify-content-evenly">
@@ -81,7 +81,7 @@ function Home() {
         <br />
         <div className="container text-center">
           <div className="row gy-5">
-            {vehicleTypes?.map((item: VehicleType) => (
+            {vehicleTypes?.map((item: IVehicleType) => (
               <Col key={item.name}>
                 <Card
                   key={item.name}

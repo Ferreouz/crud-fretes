@@ -7,6 +7,7 @@ import createStore from 'react-auth-kit/createStore';
 import Home from './pages/Home';
 import Vehicles from './pages/Vehicles'
 import VehicleType from './pages/VehicleTypes'
+import Users from './pages/Users'
 
 const store = createStore({
   authName: '_auth',
@@ -41,6 +42,14 @@ function App() {
             element={
               <RequireAuth fallbackPath="/login">
                 <VehicleType />
+              </RequireAuth>
+            }
+          ></Route>
+          <Route
+            path="/usuarios"
+            element={
+              <RequireAuth fallbackPath="/login">
+                <Users />
               </RequireAuth>
             }
           ></Route>

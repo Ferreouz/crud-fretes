@@ -1,8 +1,8 @@
 import axios, { AxiosError } from "axios";
-import { Freight } from "../types";
+import { IFreight } from "../types";
 import getCookie from "../utils/getCookie";
 
-export async function getFreights(): Promise<Freight[]> {
+export async function getFreights(): Promise<IFreight[]> {
     const res = await axios.get(import.meta.env.VITE_BACKEND_URL + "/freights", {
         headers: {
             Authorization: `Bearer ${getCookie("_auth")}`
@@ -11,7 +11,7 @@ export async function getFreights(): Promise<Freight[]> {
     return res.data;
 }
 
-export async function updateFreight(freight: Freight): Promise<{ success: boolean, error?: string }> {
+export async function updateFreight(freight: IFreight): Promise<{ success: boolean, error?: string }> {
     try {
         await axios.put(import.meta.env.VITE_BACKEND_URL + "/freights/" + freight.id, freight, {
             headers: {
@@ -27,7 +27,7 @@ export async function updateFreight(freight: Freight): Promise<{ success: boolea
     return { success: false }
 }
 
-export async function createFreight(freight: Freight): Promise<{ success: boolean, error?: string }> {
+export async function createFreight(freight: IFreight): Promise<{ success: boolean, error?: string }> {
     try {
         await axios.post(import.meta.env.VITE_BACKEND_URL + "/freights", freight, {
             headers: {

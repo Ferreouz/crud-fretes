@@ -1,40 +1,30 @@
-import { useState, SyntheticEvent, useEffect } from 'react';
+import { useState, SyntheticEvent } from 'react';
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
-import { IVehicleType } from '../../types';
-import { PropsModalVehicle } from './types';
-import * as api from "../../hooks/Vehicle";
+import { PropsModalUser } from './types';
+import { IUser } from '../../types';
 
-function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, vehicle }: PropsModalVehicle) {
-    const [vehiclePlate, setVehiclePlate] = useState("");
+function ModalVehicle({ opened, closeModal, operation, addUser, editUser, user }: PropsModalUser) {
     const [name, setName] = useState("");
-    const [type, setType] = useState("");
-    const [vehicleTypes, setVehicleTypes] = useState<IVehicleType[]>([]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const data = await api.getVehicleTypes();
-            setVehicleTypes(data);
-        };
-        fetchData();
-    }, []);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
 
     function handleSubmit(event: SyntheticEvent) {
         event.preventDefault();
 
         const item = {
-            plate: vehiclePlate || vehicle?.plate || "",
-            name: name || vehicle?.name || "",
-            type: type || vehicle?.type || "",
+            name: name || user?.name || "",
+            email,
+            password,
         }
         switch (operation) {
             case "create":
-                addVehicle(item)
+                addUser(item as IUser)
                 break;
             case "update":
-                editVehicle(item, vehicle?.plate || "")
+                editUser(item as IUser, user?.id || 0)
                 break;
             default:
                 break;
@@ -42,9 +32,9 @@ function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, 
         close();
     }
     function close() {
-        setVehiclePlate('');
-        setType('');
         setName('');
+        setEmail('');
+        setPassword('');
         closeModal();
     }
     return (
@@ -58,33 +48,31 @@ function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, 
                     </Modal.Header>
                     <Modal.Body>
                         <Row>
-                            <Form.Label >Nome do veículo</Form.Label>
+                            <Form.Label >Nome</Form.Label>
                             <Form.Control
-                                value={name || vehicle?.name}
+                                value={name || user?.name}
                                 type="text"
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </Row>
                         <br />
                         <Row>
-                            <Form.Label >Placa</Form.Label>
+                            <Form.Label >Email</Form.Label>
                             <Form.Control
-                                value={vehiclePlate || vehicle?.plate}
+                                value={email || user?.email}
                                 type="text"
-                                onChange={(e) => setVehiclePlate(e.target.value)}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </Row>
                         <br />
                         <Row>
-                            <Form.Label >Tipo</Form.Label>
-                            <Form.Select value={vehicle?.type} onChange={(e) => setType(e.target.value)}>
-                                <option>Selecionar</option>
-                                {vehicleTypes?.map((item: IVehicleType) => (
-                                    <option key={item.name} value={item.name} >{item.name} (Peso: {item.weight})</option>
-                                ))}
-                            </Form.Select>
+                            <Form.Label >Senha</Form.Label>
+                            <Form.Control
+                                value={password || ""}
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                            />
                         </Row>
-
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={close}>

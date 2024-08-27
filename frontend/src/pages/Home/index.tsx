@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
 import Card from "../../components/MCard";
 import { Button } from "react-bootstrap";
-import { Freight } from "../../types";
+import { IFreight } from "../../types";
 import { createFreight, getFreights, updateFreight, deleteFreight } from "../../hooks/Freight";
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
 import MNavbarCompany from "../../components/MNavbarCompany";
 import { Col } from 'react-bootstrap';
 function Home() {
-  const [freights, setFreights] = useState<Freight[]>([]);
+  const [freights, setFreights] = useState<IFreight[]>([]);
   const [showModal, setModalState] = useState(false);
   const [operation, setOperation] = useState('');
-  const [freightForEdition, setFreightForEdition] = useState<Freight>();
+  const [freightForEdition, setFreightForEdition] = useState<IFreight>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,7 +21,7 @@ function Home() {
     fetchData();
   }, []);
 
-  async function update(newFreight: Freight) {
+  async function update(newFreight: IFreight) {
     const res = await updateFreight(newFreight)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar atualizar o Frete, por favor, tente novamente")
@@ -30,7 +30,7 @@ function Home() {
     setFreights(await getFreights());
   }
 
-  async function add(newFreight: Freight) {
+  async function add(newFreight: IFreight) {
     const res = await createFreight(newFreight)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar criar o Frete, por favor, tente novamente")
@@ -61,8 +61,8 @@ function Home() {
       <MNavbarCompany />
       <div className="container">
         <ModalFreight opened={showModal} closeModal={() => setModalState(false)} freight={freightForEdition}
-          addFreight={(newFreight: Freight) => add(newFreight)}
-          editFreight={(newFreight: Freight) => update(newFreight)}
+          addFreight={(newFreight: IFreight) => add(newFreight)}
+          editFreight={(newFreight: IFreight) => update(newFreight)}
           operation={operation as PropsModalFreight["operation"]}
         />
         <div className="d-flex justify-content-evenly">
@@ -80,7 +80,7 @@ function Home() {
         <br />
         <div className="container text-center">
           <div className="row gy-5">
-            {freights?.map((item: Freight) => (
+            {freights?.map((item: IFreight) => (
               <Col key={item.id}>
                 <Card
                   key={item.id}

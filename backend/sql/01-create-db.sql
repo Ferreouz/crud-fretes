@@ -25,7 +25,10 @@ CREATE TABLE "Users" (
     "name" VARCHAR(255) NOT NULL,
     "type" VARCHAR(10) NOT NULL,
     "email" VARCHAR(255) UNIQUE NOT NULL,
-    "password" VARCHAR(255) NOT NULL
+    "password" VARCHAR(255) NOT NULL,
+    "created_at" TIMESTAMPTZ DEFAULT now(),
+    "updated_at" TIMESTAMPTZ DEFAULT now(),
+    "active" boolean DEFAULT true
 );
 
 CREATE TABLE "Freights" (
