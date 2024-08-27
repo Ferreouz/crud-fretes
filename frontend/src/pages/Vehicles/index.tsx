@@ -27,6 +27,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar atualizar o Frete, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicles(await api.getVehicles());
   }
 
@@ -36,6 +37,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar criar o Frete, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicles(await api.getVehicles());
   }
 
@@ -52,6 +54,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar apagar o Frete, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicles(await api.getVehicles());
   }
 

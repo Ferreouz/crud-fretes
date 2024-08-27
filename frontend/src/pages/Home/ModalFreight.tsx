@@ -42,7 +42,6 @@ function ModalFreight({ opened, closeModal, operation, addFreight, editFreight, 
       default:
         break;
     }
-    close();
   }
   function close() {
     setProductName('');

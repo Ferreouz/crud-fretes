@@ -26,7 +26,6 @@ function ModalVehicle({ opened, closeModal, operation, addVehicle, editVehicle, 
             default:
                 break;
         }
-        close();
     }
     function close() {
         setWeight(0);

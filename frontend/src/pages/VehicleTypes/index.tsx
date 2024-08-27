@@ -28,6 +28,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar atualizar o tipo do veiculo, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicleTypes(await api.getVehicleTypes());
   }
 
@@ -37,6 +38,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar criar o tipo do veiculo, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicleTypes(await api.getVehicleTypes());
   }
 
@@ -53,6 +55,7 @@ function Home() {
       alert(res.error || "Erro ocorreu ao tentar apagar o tipo do veiculo, por favor, tente novamente")
       return;
     }
+    setModalState(false)
     setVehicleTypes(await api.getVehicleTypes());
   }
 
