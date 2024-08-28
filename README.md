@@ -10,7 +10,7 @@
 - Generate report
 - When Driver asks for freight and receives it, price and rate are stored in db
 - Create tests logic (DONE)
-- Install on Docker
+- Install on Docker (DONE)
 - Publish live demo
 
 ## Bugs

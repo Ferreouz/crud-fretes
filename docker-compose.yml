@@ -1,0 +1,36 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    env_file: ./backend/.env
+    volumes:
+      - ./backend/sql/01-create-db.sql:/docker-entrypoint-initdb.d/01-create-db.sql
+      - ./backend/sql/02-default-values.sql:/docker-entrypoint-initdb.d/02-default-values.sql
+      - ./backend/sql/03-mock-data.sql:/docker-entrypoint-initdb.d/03-mock-data.sql
+    environment:
+      POSTGRES_USERNAME: "postgres"
+      POSTGRES_PASSWORD: "Postgres2022!"
+    ports:
+      - "5432:5432"
+
+  backend:
+    environment:
+      PG_USER: postgres
+      PG_HOST: postgres
+      PG_PASSWORD: "Postgres2022!"
+      PG_PORT: 5432
+      JWT_SECRET: "hel"
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+
+  frontend:
+    environment:
+      - VITE_BACKEND_URL="http://localhost:8080"
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
