@@ -16,7 +16,6 @@ export interface IFreight {
     vehicle?: IVehicle,
     vehicle_plate?: string,
     distance?: number,
-    open?: boolean,
     closed_at?: Date,
     created_at?: Date,
     updated_at?: Date,

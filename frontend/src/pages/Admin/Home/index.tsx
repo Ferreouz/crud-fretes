@@ -110,7 +110,7 @@ function Home() {
                   subtitle={"R$" + item.price + ` (${item.rate} de taxa)`}
                   text={[
                     `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
-                    `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,
+                    `Status: ${item.driver_id == null ? "Aberto" : "Aguardando Motorista"}`,
                   ]}
                   footer={
                     <>

@@ -61,7 +61,7 @@ export default function route(app) {
 
         const hashedPass = bcrypt.hashSync(password, 10);
         try {
-            // user.password = hashedPass;
+            userTemp.password = hashedPass;
             const id = await db.users.create(userTemp);
             console.log("Register says:", id)
             delete userTemp.password;

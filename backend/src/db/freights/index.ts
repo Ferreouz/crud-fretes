@@ -75,9 +75,12 @@ async function update(id: number, freight: IFreight):Promise<number> {
     if(query == "" || !args){
         throw new Error("No update fields provided");
     }
-    query = 'UPDATE "Freights" SET ' + query + `, updated_at = now() WHERE id = $${index}`;
+    query = 'UPDATE "Freights" SET ' + query + `, updated_at = now() WHERE id = $${index} AND driver_id IS NULL`;
     args.push(id);
     const res = await pool.query(query, args);
+    if(res.rowCount < 1) {
+        throw new Error("Freight is already has a driver!");
+    }
     return res.rowCount;
 }
 
@@ -127,7 +130,6 @@ async function adminUpdateFreightRequest(freight_id: number, driver_id: number, 
         await pool.query(`UPDATE "FreightDriverRequests" SET status = 'denied', updated_at = now() WHERE freight_id = $1 AND driver_id != $2`, [freight_id, driver_id]);
     }
     const res = await pool.query('UPDATE "FreightDriverRequests" SET status = $1, updated_at = now() WHERE driver_id = $2 AND freight_id = $3', [new_status, driver_id, freight_id]);
-    console.log(res)
     return res.rowCount;
 }
 
