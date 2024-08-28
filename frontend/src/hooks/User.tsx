@@ -1,4 +1,4 @@
-import { IUser} from "../types";
+import { IUser } from "../types";
 import axios, { AxiosError } from "axios";
 import getCookie from "../utils/getCookie";
 
@@ -53,6 +53,24 @@ export async function createUser(user: IUser): Promise<{ success: boolean, error
 export async function deleteUser(id: number): Promise<{ success: boolean, error?: string }> {
   try {
     await axios.delete(import.meta.env.VITE_BACKEND_URL + "/users/" + id, {
+      headers: {
+        Authorization: `Bearer ${getCookie("_auth")}`
+      }
+    });
+    return { success: true };
+  } catch (e) {
+    if (e instanceof AxiosError) {
+      return { success: false, error: e?.response?.data?.error }
+    }
+    console.log(e)
+  }
+  return { success: false }
+}
+
+
+export async function unDeleteUser(id: number): Promise<{ success: boolean, error?: string }> {
+  try {
+    await axios.delete(import.meta.env.VITE_BACKEND_URL + "/users/activate/" + id, {
       headers: {
         Authorization: `Bearer ${getCookie("_auth")}`
       }

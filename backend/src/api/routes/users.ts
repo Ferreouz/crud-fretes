@@ -75,4 +75,17 @@ export default function route(app) {
         }
     })
 
+    app.delete("/users/activate/:id", middleware, async (req: Request, res: Response) => {
+        if (!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            await db.users.unDelete(req.params.id);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e)
+            return res.sendStatus(400);
+        }
+    })
+
 }

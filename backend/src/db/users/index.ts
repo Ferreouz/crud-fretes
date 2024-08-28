@@ -80,6 +80,11 @@ async function deleteUser(id: number): Promise<number> {
     return res.rowCount;
 }
 
+async function unDeleteUser(id: number): Promise<number> {
+    const res = await pool.query(`UPDATE "Users" SET active = true WHERE id = $1 AND type != 'admin'`, [id]);
+    return res.rowCount;
+}
+
 const users = {
     getAll: getAllUsers,
     get: getUser,
@@ -87,5 +92,6 @@ const users = {
     insert,
     update,
     delete: deleteUser,
+    unDelete: unDeleteUser,
 }
 export default users;

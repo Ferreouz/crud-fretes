@@ -52,7 +52,24 @@ function Home() {
     }
     const res = await api.deleteUser(id);
     if (!res.success) {
-      alert(res.error || "Erro ocorreu ao tentar apagar o usuário, por favor, tente novamente")
+      alert(res.error || "Erro ocorreu ao tentar desativar o usuário, por favor, tente novamente")
+      return;
+    }
+    setUsers(await api.getUsers());
+    setModalState(false)
+  }
+
+  async function unDel(id: number) {
+    if (!id) {
+      alert("Ocorreu um erro inesperado, por favor, contate o suporte")
+      return;
+    }
+    if (!confirm('Deseja realmente ATIVAR este usuário?')) {
+      return;
+    }
+    const res = await api.unDeleteUser(id);
+    if (!res.success) {
+      alert(res.error || "Erro ocorreu ao tentar ativar o usuário, por favor, tente novamente")
       return;
     }
     setUsers(await api.getUsers());
@@ -94,8 +111,12 @@ function Home() {
                   ]}
                   footer={
                     <>
-                      <Card.Link className={"btn btn-danger" + (item.active == true ? "" : " disabled")} onClick={() => del(item.id)}>Desativar</Card.Link>
-                      <Card.Link className={"btn" + (item.active == true ? "" : " disabled")}
+                      {
+                        item.active ? <Card.Link className="btn btn-danger" onClick={() => del(item.id)}>Desativar</Card.Link> :
+                        <Card.Link className="btn btn-success" onClick={() => unDel(item.id)}>Ativar</Card.Link>
+                      }
+                      
+                      <Card.Link className="btn"
                         onClick={() => {
                           setOperation("update");
                           setUserForEdition(item);
