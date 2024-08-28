@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
-import Card from "../../../components/MCard";
+import MCard from "../../../components/MCard";
 import { Button } from "react-bootstrap";
 import { IVehicle } from "../../../types";
 import * as api from "../../../hooks/Vehicle";
 import MNavbarCompany from "../../../components/MNavbarAdmin";
-import { Col } from 'react-bootstrap';
+import { Col, Card } from 'react-bootstrap';
 import ModalVehicle from "./ModalVehicle";
 import { PropsModalVehicle } from "./types";
+import moment from "moment";
 function Home() {
   const [vehicles, setVehicles] = useState<IVehicle[]>([]);
   const [showModal, setModalState] = useState(false);
@@ -85,22 +86,26 @@ function Home() {
           <div className="row gy-5">
             {vehicles?.map((item: IVehicle) => (
               <Col key={item.plate}>
-                <Card
+                <MCard
                   key={item.plate}
                   title={"Veículo: " + (item.name || "")}
                   subtitle={`PLACA: ${item.plate}`}
                   text={[
                     `Tipo: ${item.type}`,
                   ]}
-                  onEdit={() => {
-                    setOperation("update");
-                    setVehicleForEdition(item);
-                    setModalState(true);
-                  }}
-                  onDelete={() => del(item.plate)}
-                  canEdit={true}
-                  canDelete={true}
-                  lastUpdate={item.updated_at}
+                  footer={
+                    <>
+                      <Card.Link className="btn btn-danger" onClick={() => del(item.plate)}>Apagar</Card.Link>
+                      <Card.Link className="btn"
+                        onClick={() => {
+                          setOperation("update");
+                          setVehicleForEdition(item);
+                          setModalState(true);
+                        }}>Editar</Card.Link>
+                      <br />
+                      <small className="text-info">Última alteração {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                    </>
+                  }
                 />
               </Col>
             ))}

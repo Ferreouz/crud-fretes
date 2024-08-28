@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
-import Card from "../../../components/MCard";
+import MCard from "../../../components/MCard";
 import { Button } from "react-bootstrap";
 import { IUser } from "../../../types";
 import * as api from "../../../hooks/User";
 import MNavbarCompany from "../../../components/MNavbarAdmin";
-import { Col } from 'react-bootstrap';
+import { Col, Card } from 'react-bootstrap';
 import ModalVehicleType from "./ModalUser";
 import { PropsModalUser } from "./types";
-
+import moment from "moment";
 function Home() {
   const [users, setUsers] = useState<IUser[]>([]);
   const [showModal, setModalState] = useState(false);
@@ -47,7 +47,7 @@ function Home() {
       alert("Ocorreu um erro inesperado, por favor, contate o suporte")
       return;
     }
-    if (!confirm('Deseja realmente APAGAR este usuário?')) {
+    if (!confirm('Deseja realmente DESATIVAR este usuário?')) {
       return;
     }
     const res = await api.deleteUser(id);
@@ -86,22 +86,32 @@ function Home() {
           <div className="row gy-5">
             {users?.map((item: IUser) => (
               <Col key={item.name}>
-                <Card
+                <MCard
                   key={item.name}
                   title={"Nome: " + (item.name || "")}
                   subtitle={`Email: ${item.email}`}
                   text={[
                   ]}
-                  onEdit={() => {
-                    setOperation("update");
-                    setUserForEdition(item);
-                    setModalState(true);
-                  }}
-                  onDelete={() => del(item.id)}
-                  canEdit={item.active == true}
-                  canDelete={item.active == true}
-                  lastUpdate={item.updated_at}
-                  activeItem={item.active}
+                  footer={
+                    <>
+                      <Card.Link className={"btn btn-danger" + (item.active == true ? "" : " disabled")} onClick={() => del(item.id)}>Desativar</Card.Link>
+                      <Card.Link className={"btn" + (item.active == true ? "" : " disabled")}
+                        onClick={() => {
+                          setOperation("update");
+                          setUserForEdition(item);
+                          setModalState(true);
+                        }}>Editar</Card.Link>
+                      <br />
+                      {
+                        item.active &&
+                        <small className="text-info">Última alteração {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                      }
+                      {
+                        !item.active &&
+                        <small className="text-muted">Desativado em {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                      }
+                    </>
+                  }
                 />
               </Col>
             ))}

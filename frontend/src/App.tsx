@@ -45,7 +45,6 @@ function App() {
       <AuthProvider store={store}>
         <Routes>
           <Route path="/login" element={<Login onLogin={checkLogin} />}></Route>
-
           {
             user?.type == "admin" ?
               <>

@@ -35,10 +35,6 @@ function Home() {
                     `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
                     `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,
                   ]}
-                  canEdit={false}
-                  canDelete={false}
-                  activeItem={true}
-                  lastUpdate={item.updated_at}
                 />
               </Col>
             ))}

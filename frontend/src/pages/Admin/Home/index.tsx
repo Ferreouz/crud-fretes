@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Card from "../../../components/MCard";
+import MCard from "../../../components/MCard";
 import { Button } from "react-bootstrap";
 import { IFreight } from "../../../types";
 import { createFreight, getFreights, updateFreight, deleteFreight } from "../../../hooks/Freight";
@@ -7,6 +7,8 @@ import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
 import MNavbarCompany from "../../../components/MNavbarAdmin";
 import { Col } from 'react-bootstrap';
+import { Card } from "react-bootstrap";
+import moment from "moment";
 function Home() {
   const [freights, setFreights] = useState<IFreight[]>([]);
   const [showModal, setModalState] = useState(false);
@@ -85,7 +87,7 @@ function Home() {
           <div className="row gy-5">
             {freights?.map((item: IFreight) => (
               <Col key={item.id}>
-                <Card
+                <MCard
                   key={item.id}
                   title={"Produto: " + (item.product_name || "")}
                   subtitle={"R$" + item.price + ` + ${item.rate} (taxa)`}
@@ -93,15 +95,19 @@ function Home() {
                     `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
                     `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,
                   ]}
-                  onEdit={() => {
-                    setOperation("update");
-                    setFreightForEdition(item);
-                    setModalState(true);
-                  }}
-                  onDelete={() => del(item.id)}
-                  canEdit={item.open == true}
-                  canDelete={item.open == true}
-                  lastUpdate={item.updated_at}
+                  footer={
+                    <>
+                      <Card.Link className={"btn btn-danger" + (item.open == true ? "" : " disabled")} onClick={() => del(item.id)}>Apagar</Card.Link>
+                      <Card.Link className={"btn" + (item.open == true ? "" : " disabled")}
+                        onClick={() => {
+                          setOperation("update");
+                          setFreightForEdition(item);
+                          setModalState(true);
+                        }}>Editar</Card.Link>
+                      <br />
+                      <small className="text-info">Última alteração {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                    </>
+                  }
                 />
               </Col>
             ))}
