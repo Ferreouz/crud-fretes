@@ -13,6 +13,7 @@ interface Props {
   id?: number,
   lastUpdate?: Date,
   activeItem?: boolean,
+  footer?: JSX.Element,
 }
 
 export default function MCard(arg: Props) {
@@ -42,6 +43,7 @@ export default function MCard(arg: Props) {
           !arg.activeItem &&
           <small className="text-muted">Desativado em {moment(arg.lastUpdate).format("DD/MM HH:mm")}</small>
         }
+        {arg.footer}
       </Card.Footer>
     </Card>
   )

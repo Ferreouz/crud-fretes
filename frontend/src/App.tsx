@@ -26,8 +26,9 @@ function App() {
   const navigate = useNavigate();
 
   async function checkLogin() {
-    setUser(await getLoginStatus());
-    if (!user) {
+    const temp = await getLoginStatus();
+    setUser(temp);
+    if (!temp) {
       navigate("/login");
     }
   }
