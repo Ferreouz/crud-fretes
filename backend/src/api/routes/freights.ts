@@ -28,7 +28,6 @@ export default function route(app) {
             freights[i].driver_receives = formatMoney(prices.price - prices.rate);
 
         }
-        console.log(freights)
         return res.send(freights);
     })
 
@@ -79,7 +78,6 @@ export default function route(app) {
 
     //Admin accepting/denying freight request
     app.put("/freights/request", middleware, async (req: Request, res: Response) => {
-        console.log(req.body)
         if (!isAdmin(req.user)) {
             return res.sendStatus(403);
         }
@@ -90,6 +88,11 @@ export default function route(app) {
                 const freight = await db.freights.getWithVehicle(req.body.freight_id);
                 if(!freight) {
                     throw new Error("Freight not found!");
+                }
+                if (freight.driver_id != null) {
+                    return res.status(400).json({
+                        error: "Este frete já possui um motorista!"
+                    });
                 }
                 const prices = calculateFreightPrice(freight.distance, freight.vehicle.weight);
                 price = Number(prices.price.toFixed(2));
@@ -113,7 +116,12 @@ export default function route(app) {
             return res.sendStatus(403);
         }
         try {
-            await db.freights.update(req.params.id, req.body);
+            const rows = await db.freights.update(req.params.id, req.body);
+            if (rows < 1) {
+                return res.status(400).json({
+                    error: "Este frete já possui um motorista, portanto não é possivel edita-lo!"
+                });
+            }
             return res.sendStatus(200);
         } catch (e) {
             return res.sendStatus(400);

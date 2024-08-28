@@ -1,12 +1,12 @@
 import pool from "../pool";
 import { IFreight, IFreightWithVehicle, isFreightModifiableKey, DriverRequestStatus } from "./types";
 
-async function getAllFreights():Promise<Array<IFreight>> {
+async function getAllFreights(): Promise<Array<IFreight>> {
     const res = await pool.query('Select * from "Freights" order by updated_at desc');
     return res.rows;
 }
 
-async function getFreightWithVehicle(id: number):Promise<IFreightWithVehicle> {
+async function getFreightWithVehicle(id: number): Promise<IFreightWithVehicle> {
     const res = await pool.query(`
     Select  f.*, jsonb_build_object(
         'plate', v.plate,
@@ -21,7 +21,7 @@ async function getFreightWithVehicle(id: number):Promise<IFreightWithVehicle> {
     return res.rows.length > 0 ? res.rows[0] : null;
 }
 
-async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
+async function getAllFreightsWithVehicle(): Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
     WITH
     drivers_requests AS (
@@ -55,7 +55,7 @@ async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
     return res.rows;
 }
 
-async function getAllForDrivers(driver_id: number):Promise<Array<IFreightWithVehicle>> {
+async function getAllForDrivers(driver_id: number): Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
 Select f.*, jsonb_build_object(
     'plate', v.plate,
@@ -76,7 +76,7 @@ Select f.*, jsonb_build_object(
     return res.rows;
 }
 // 
-async function update(id: number, freight: IFreight):Promise<number> {
+async function update(id: number, freight: IFreight): Promise<number> {
     delete freight.id;
     const keys = Object.keys(freight);
     let query = "";
@@ -84,25 +84,22 @@ async function update(id: number, freight: IFreight):Promise<number> {
     const args = [];
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        if(isFreightModifiableKey(key) && freight[key]){
+        if (isFreightModifiableKey(key) && freight[key]) {
             query += `${index > 1 ? "," : ""}${key} = $${index}`;
             args.push(freight[key]);
-            index ++;
+            index++;
         }
     }
-    if(query == "" || !args){
+    if (query == "" || !args) {
         throw new Error("No update fields provided");
     }
     query = 'UPDATE "Freights" SET ' + query + `, updated_at = now() WHERE id = $${index} AND driver_id IS NULL`;
     args.push(id);
     const res = await pool.query(query, args);
-    if(res.rowCount < 1) {
-        throw new Error("Freight is already has a driver!");
-    }
     return res.rowCount;
 }
 
-async function insert(freight: IFreight):Promise<number> {
+async function insert(freight: IFreight): Promise<number> {
     delete freight.id;
     const keys = Object.keys(freight);
     let query = "(";
@@ -111,19 +108,19 @@ async function insert(freight: IFreight):Promise<number> {
     const args = [];
     for (let i = 0; i < keys.length; i++) {
         const key = keys[i];
-        if(isFreightModifiableKey(key) && freight[key]){
+        if (isFreightModifiableKey(key) && freight[key]) {
             query += `${index > 1 ? "," : ""}${key}`;
             values += `${index > 1 ? "," : ""}$${index}`;
             args.push(freight[key]);
-            index ++;
+            index++;
         }
     }
-    if(query == "(" || !args){
+    if (query == "(" || !args) {
         throw new Error("No insert fields provided");
     }
     query += ")";
     values += ")";
-    query = 'INSERT INTO "Freights" ' + query  + " " + values;
+    query = 'INSERT INTO "Freights" ' + query + " " + values;
     const res = await pool.query(query, args);
     return res.rowCount;
 }
@@ -141,14 +138,10 @@ async function driverRequest(freight_id: number, driver_id: number): Promise<num
 
 // has a bug: if from api a admin can deny a driver's request even if its ongoing with another, has no effect on the logic tho. #TODO 
 async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus, price?: number, rate?: number): Promise<number> {
-    if(new_status == "accepted") {
+    if (new_status == "accepted") {
         const res2 = await pool.query(
-            `UPDATE "Freights" SET driver_id = $1, price = $2, rate = $3, updated_at = now() WHERE id = $4 AND driver_id IS NULL`, 
-            [driver_id, price, rate ,freight_id]);
-        console.log(res2)
-        if(res2.rowCount < 1) {
-            throw new Error("freight already had a driver!");
-        }
+            `UPDATE "Freights" SET driver_id = $1, price = $2, rate = $3, updated_at = now() WHERE id = $4`,
+            [driver_id, price, rate, freight_id]);
         await pool.query(`UPDATE "FreightDriverRequests" SET status = 'denied', updated_at = now() WHERE freight_id = $1 AND driver_id != $2`, [freight_id, driver_id]);
     }
     const res = await pool.query(`UPDATE "FreightDriverRequests" SET status = $1, updated_at = now() WHERE driver_id = $2 AND freight_id = $3 AND status != 'accepted'`, [new_status, driver_id, freight_id]);
