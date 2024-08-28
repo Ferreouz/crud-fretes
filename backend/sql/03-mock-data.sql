@@ -2,9 +2,9 @@
 
 
 INSERT INTO "Vehicles" ("plate", "name", "type")
-VALUES ('CGI-1234', 'Optimus Prime', 'Caminhão'),
-('XXX-9999', 'Buble Bee', 'Caminhonete'),
-('ZZZ-1111', 'McLaren', 'Furgão');
+VALUES ('CGI-1234', 'Caminhão grandão', 'Caminhão'),
+('XXX-9999', 'Caminhonete da garagem', 'Caminhonete'),
+('ZZZ-1111', 'Aquele Furgão', 'Furgão');
 
 INSERT INTO "Freights" ("product_name", "distance", "vehicle_plate")
 VALUES ('Cadeira de Ferro', 10, 'CGI-1234'),

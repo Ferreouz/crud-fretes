@@ -19,8 +19,14 @@ export function calculateFreightPrice(distance: number, vehicleWeight: number): 
     };
 }
 
-export function formatMoney(int: number | undefined): string | undefined {
-    if (!int || !(int > 0)) {
+export function formatMoney(int: string | number | undefined): string | undefined {
+    if (!int) {
+        return undefined;
+    }
+    if(typeof int == "string"){
+        int = Number(int);
+    }
+    if(!(int > 0)) {
         return undefined;
     }
     let out = int.toFixed(2);

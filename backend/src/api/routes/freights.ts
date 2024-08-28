@@ -18,9 +18,15 @@ export default function route(app) {
         for (let i = 0; i < freights.length; i++) {
             const prices = calculateFreightPrice(freights[i].distance, freights[i].vehicle.weight);
 
-            freights[i].driver_receives = formatMoney(prices.price - prices.rate);
+            if(freights[i].price && freights[i].rate) {
+                prices.price = Number(freights[i].price);
+                prices.rate = Number(freights[i].rate);
+            } 
+
             freights[i].price = formatMoney(prices.price);
             freights[i].rate = formatMoney(prices.rate);
+            freights[i].driver_receives = formatMoney(prices.price - prices.rate);
+
         }
         console.log(freights)
         return res.send(freights);
@@ -78,7 +84,18 @@ export default function route(app) {
             return res.sendStatus(403);
         }
         try {
-            await db.freights.adminUpdateFreightRequest(req.body.freight_id, req.body.driver_id, req.body.new_status);
+            let price: number = undefined;
+            let rate: number = undefined;
+            if(req.body.new_status == "accepted") {
+                const freight = await db.freights.getWithVehicle(req.body.freight_id);
+                if(!freight) {
+                    throw new Error("Freight not found!");
+                }
+                const prices = calculateFreightPrice(freight.distance, freight.vehicle.weight);
+                price = Number(prices.price.toFixed(2));
+                rate = Number(prices.rate.toFixed(2));
+            }
+            await db.freights.adminUpdateFreightRequest(req.body.freight_id, req.body.driver_id, req.body.new_status, price, rate);
             return res.sendStatus(200);
         } catch (e) {
             console.log(e)

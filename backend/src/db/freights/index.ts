@@ -6,6 +6,21 @@ async function getAllFreights():Promise<Array<IFreight>> {
     return res.rows;
 }
 
+async function getFreightWithVehicle(id: number):Promise<IFreightWithVehicle> {
+    const res = await pool.query(`
+    Select  f.*, jsonb_build_object(
+        'plate', v.plate,
+        'name', v.name,
+        'type', v.type,
+        'weight', t.weight
+    ) as vehicle 
+    from "Freights" f 
+    INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
+    INNER JOIN "VehicleTypes" as t ON v.type = t.name
+    WHERE f.id = $1`, [id]);
+    return res.rows.length > 0 ? res.rows[0] : null;
+}
+
 async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
     WITH
@@ -54,7 +69,7 @@ Select f.*, jsonb_build_object(
         INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
         INNER JOIN "VehicleTypes" as t ON v.type = t.name
         WHERE f.driver_id = $1 
-        OR (SELECT updated_at FROM "FreightDriverRequests" as req WHERE req.driver_id = $1 AND freight_id = f.id) IS NOT NULL
+        OR (SELECT 1 FROM "FreightDriverRequests" as req WHERE req.driver_id = $1 AND freight_id = f.id) IS NOT NULL
         OR f.driver_id IS NULL
         order by f.updated_at desc;
     `, [driver_id]);
@@ -125,9 +140,11 @@ async function driverRequest(freight_id: number, driver_id: number): Promise<num
 }
 
 // has a bug: if from api a admin can deny a driver's request even if its ongoing with another, has no effect on the logic tho. #TODO 
-async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus): Promise<number> {
+async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus, price?: number, rate?: number): Promise<number> {
     if(new_status == "accepted") {
-        const res2 = await pool.query(`UPDATE "Freights" SET driver_id = $1, updated_at = now() WHERE id = $2 AND driver_id IS NULL`, [driver_id, freight_id]);
+        const res2 = await pool.query(
+            `UPDATE "Freights" SET driver_id = $1, price = $2, rate = $3, updated_at = now() WHERE id = $4 AND driver_id IS NULL`, 
+            [driver_id, price, rate ,freight_id]);
         console.log(res2)
         if(res2.rowCount < 1) {
             throw new Error("freight already had a driver!");
@@ -147,5 +164,6 @@ const freights = {
     getAllForDrivers,
     driverRequest,
     adminUpdateFreightRequest,
+    getWithVehicle: getFreightWithVehicle,
 }
 export default freights;
