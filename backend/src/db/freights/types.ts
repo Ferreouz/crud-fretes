@@ -2,16 +2,17 @@ import { IUser } from "../users/types";
 import { IVehicleWithWeight } from "../vehicles/types";
 
 export type DriverRequestStatus =  "waiting"| "denied" | "accepted"
+export type FreightStatus =  "Aceito"| "Rota de entrega" | "Finalizado"
 export interface IFreight {
     id: number,
     product_name: string,
     driver_id?: number,
     vehicle_plate: string,
     distance: number,
-    closed_at?: string,
     created_at: string,
     updated_at: string,
-
+    status?: FreightStatus,
+    delivered_at?: string,
     /**
     * All Calculated at runtime (not part of DB table)
     */ 

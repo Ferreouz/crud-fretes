@@ -16,5 +16,5 @@
 - Publish live demo
 
 ## Bugs
-
+ - Array of DriverRequests when null returns as [null] from db
  - When user logs, freights are not shown (DONE)

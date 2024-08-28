@@ -140,7 +140,7 @@ async function driverRequest(freight_id: number, driver_id: number): Promise<num
 async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus, price?: number, rate?: number): Promise<number> {
     if (new_status == "accepted") {
         const res2 = await pool.query(
-            `UPDATE "Freights" SET driver_id = $1, price = $2, rate = $3, updated_at = now() WHERE id = $4`,
+            `UPDATE "Freights" SET driver_id = $1, price = $2, rate = $3, status = 'Aceito', updated_at = now() WHERE id = $4`,
             [driver_id, price, rate, freight_id]);
         await pool.query(`UPDATE "FreightDriverRequests" SET status = 'denied', updated_at = now() WHERE freight_id = $1 AND driver_id != $2`, [freight_id, driver_id]);
     }

@@ -7,6 +7,7 @@ export interface IVehicle {
     updated_at?: Date,
 }
 export type DriverRequestStatus =  "waiting"| "denied" | "accepted"
+export type FreightStatus =  "Aceito"| "Rota de entrega" | "Finalizado"
 export interface IFreight {
     id?: number,
     product_name?: string,
@@ -16,7 +17,8 @@ export interface IFreight {
     vehicle?: IVehicle,
     vehicle_plate?: string,
     distance?: number,
-    closed_at?: Date,
+    status?: FreightStatus,
+    delivered_at?: Date,
     created_at?: Date,
     updated_at?: Date,
     driver_receives?: string,
