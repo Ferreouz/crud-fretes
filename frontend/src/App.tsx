@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { IUser } from './types';
 import { getLoginStatus } from './hooks/getLoginStatus';
 import { useNavigate } from 'react-router-dom';
+import Page404 from './404';
 
 const store = createStore({
   authName: '_auth',
@@ -92,6 +93,7 @@ function App() {
                 ></Route>
               </>
           }
+          <Route path="*" element={<Page404 />}></Route>
         </Routes>
       </AuthProvider>
     </>
