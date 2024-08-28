@@ -6,6 +6,7 @@ export interface IVehicle {
     created_at?: Date,
     updated_at?: Date,
 }
+export type DriverRequestStatus =  "waiting"| "denied" | "accepted"
 export interface IFreight {
     id?: number,
     product_name?: string,
@@ -20,6 +21,17 @@ export interface IFreight {
     created_at?: Date,
     updated_at?: Date,
     driver_receives?: string,
+    drivers_requests?: IFreightRequest[],
+    driver_requested_at?: Date,
+    driver_requested_status?: DriverRequestStatus,
+}
+export interface IFreightRequest {
+    driver_id: number,
+    freight_id: number,
+    status: DriverRequestStatus,
+    created_at: string,
+    updated_at: string,
+    driver?: IUser,
 }
 export interface IVehicleType {
     name: string,

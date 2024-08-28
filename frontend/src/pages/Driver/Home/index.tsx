@@ -55,9 +55,16 @@ function Home() {
                   ]}
                   footer={
                     <>
-                      <Card.Link className={"btn btn-primary" + (item.open == true ? "" : " disabled")} onClick={() => requestFreight(item.id)}>Solicitar</Card.Link>
+                      <Card.Link className={"btn btn-primary" + (item.open == false || item.driver_requested_at ? " disabled" : "")} onClick={() => requestFreight(item.id)}>Solicitar</Card.Link>
                       <br />
-                      <small className="text-info">Última alteração {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                      {
+                        item.driver_requested_at ?
+                          item.driver_requested_status == "accepted" ? <small className="text-success">Aceito em {moment(item.updated_at).format("DD/MM HH:mm")}</small> :
+                          (item.driver_requested_status == "denied" ? <small className="text-danger">Rejeitado em {moment(item.updated_at).format("DD/MM HH:mm")}</small> :
+                            <small className="text-info">Solicitado em: {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                          )
+                        : ""
+                      }
                     </>
                   }
                 />

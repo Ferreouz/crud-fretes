@@ -14,7 +14,7 @@ export default function route(app) {
         } else {
             freights = await db.freights.getAllForDrivers(req.user.id);
         }
-        
+
         for (let i = 0; i < freights.length; i++) {
             const prices = calculateFreightPrice(freights[i].distance, freights[i].vehicle.weight);
 
@@ -51,6 +51,46 @@ export default function route(app) {
         }
     })
 
+
+    //Driver requesting freight
+    app.post("/freights/request", middleware, async (req: Request, res: Response) => {
+        if (isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            await db.freights.driverRequest(req.body.id, req.user.id);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e)
+            if ('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Você já solicitou este frete, aguarde a resposta da empresa"
+                });
+            }
+            return res.sendStatus(400);
+        }
+    })
+
+    //Admin accepting/denying freight request
+    app.put("/freights/request", middleware, async (req: Request, res: Response) => {
+        console.log(req.body)
+        if (!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            await db.freights.adminUpdateFreightRequest(req.body.freight_id, req.body.driver_id, req.body.new_status);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e)
+            if ('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Você já solicitou este frete, aguarde a resposta da empresa"
+                });
+            }
+            return res.sendStatus(400);
+        }
+    })
+
     app.put("/freights/:id", middleware, async (req: Request, res: Response) => {
         if (!isAdmin(req.user)) {
             return res.sendStatus(403);
@@ -74,5 +114,6 @@ export default function route(app) {
             return res.sendStatus(400);
         }
     })
+
 
 }

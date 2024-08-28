@@ -5,11 +5,13 @@
 - CRUD Users (DONE) 
 - Auth Backend (DONE)
 - Edit Vehicles Weights (DONE) 
-- Vision of drivers
-- Driver change freight status
+- Vision of drivers (DONE)
+- Driver request and Admin accept (DONE)
+- Driver change freight status 
 - Generate report
 - When Driver asks for freight and receives it, price and rate are stored in db
 - Create tests logic (DONE)
+- REMOVE open from freights table, replace with driver_id != null
 - Install on Docker (DONE)
 - Publish live demo
 

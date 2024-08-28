@@ -51,8 +51,8 @@ export default function route(app) {
                 error: "Por favor, digite todos os campos",
             });
         }
-        const user = { email, password, name, type: 'driver' } as IUser;
-        const form = validateFormNewUser(user);
+        const userTemp = { email, password, name, type: 'driver' } as IUser;
+        const form = validateFormNewUser(userTemp);
         if (!form.valid) {
             return res.status(400).json({
                 error: form.error
@@ -61,10 +61,12 @@ export default function route(app) {
 
         const hashedPass = bcrypt.hashSync(password, 10);
         try {
-            user.password = hashedPass;
-            await db.users.create(user);
-            delete user.password;
-            const access_token = jwt.sign(user, process.env.JWT_SECRET, { expiresIn: "1h" });
+            // user.password = hashedPass;
+            const id = await db.users.create(userTemp);
+            console.log("Register says:", id)
+            delete userTemp.password;
+            userTemp.id = id;
+            const access_token = jwt.sign(userTemp, process.env.JWT_SECRET, { expiresIn: "1h" });
             return res.status(200).json({
                 access_token,
             });

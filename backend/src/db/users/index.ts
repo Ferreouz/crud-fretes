@@ -8,16 +8,17 @@ async function getUser(email: string): Promise<IUser> {
 }
 
 // Signup Route
-async function create(user: IUser): Promise<IUser> {
-    console.log(user)
-    const res = await pool.query(`INSERT INTO "Users" ("name", "type", "email", "password") VALUES ($1, $2, $3, $4)`, 
+async function create(user: IUser): Promise<number | undefined> {
+    const res = await pool.query(`INSERT INTO "Users" ("name", "type", "email", "password") VALUES ($1, $2, $3, $4) RETURNING id`, 
         [
             user.name,
             user.type,
             user.email,
             user.password,
         ]);
-    return res.rows.length > 0 ? res.rows[0] : null;
+    console.log(res)
+    console.log(res.rows)
+    return res.rows.length > 0 ? res.rows[0].id : undefined;
 }
 
 // CRUD

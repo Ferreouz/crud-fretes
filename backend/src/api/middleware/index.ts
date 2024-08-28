@@ -11,14 +11,15 @@ const middleware = async (req, res, next) => {
         delete user.password;
         delete user.active;
         if((await db.users.get(user.email)).active == false) {
+            console.log(`user ${user.email} is not active`)
             return res.status(401).json({
                 error: "Sua conta foi desativada, entre em contato com o suporte para saber o motivo"
             });
         }
-
         req.user = user;
         next();
     } catch (err) {
+        console.log("Error in auth middleware: ", err)
         res.sendStatus(401);
     }
 };

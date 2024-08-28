@@ -1,5 +1,5 @@
 import pool from "../pool";
-import { IFreight, IFreightWithVehicle, isFreightModifiableKey } from "./types";
+import { IFreight, IFreightWithVehicle, isFreightModifiableKey, DriverRequestStatus } from "./types";
 
 async function getAllFreights():Promise<Array<IFreight>> {
     const res = await pool.query('Select * from "Freights" order by updated_at desc');
@@ -8,15 +8,34 @@ async function getAllFreights():Promise<Array<IFreight>> {
 
 async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
-    Select f.*, jsonb_build_object(
-    'plate', v.plate,
-    'name', v.name,
-    'type', v.type,
-    'weight', t.weight
-    ) as vehicle FROM "Freights" as f 
+    WITH
+    drivers_requests AS (
+        SELECT r.*,
+           jsonb_build_object(
+            'email', d.email,
+            'name', d.name,
+            'id', d.id
+            ) as driver
+        FROM "FreightDriverRequests" r
+        INNER JOIN "Users" d 
+        ON r.driver_id = d.id 
+        WHERE d.active = true
+    )
+    Select f.*, 
+        jsonb_build_object(
+            'plate', v.plate,
+            'name', v.name,
+            'type', v.type,
+            'weight', t.weight
+        ) as vehicle,
+        json_agg(dr) as drivers_requests 
+    FROM "Freights" as f 
+        LEFT  JOIN drivers_requests dr
+        ON dr.freight_id = f.id
         INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
         INNER JOIN "VehicleTypes" as t ON v.type = t.name
-        order by f.updated_at desc    
+        GROUP BY f.id, v.plate, t.weight
+        order by f.updated_at desc
     `);
     return res.rows;
 }
@@ -28,7 +47,10 @@ async function getAllForDrivers(driver_id: number):Promise<Array<IFreightWithVeh
     'name', v.name,
     'type', v.type,
     'weight', t.weight
-    ) as vehicle FROM "Freights" as f 
+    ) as vehicle,
+    (SELECT updated_at FROM "FreightDriverRequests" as req WHERE req.driver_id = $1 AND freight_id = f.id) as driver_requested_at,
+    (SELECT status FROM "FreightDriverRequests" as req WHERE req.driver_id = $1 AND freight_id = f.id) as driver_requested_status
+    FROM "Freights" as f 
         INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
         INNER JOIN "VehicleTypes" as t ON v.type = t.name
         WHERE driver_id = $1 OR open = true
@@ -90,6 +112,24 @@ async function deleteF(id: number): Promise<number> {
     return res.rowCount;
 }
 
+async function driverRequest(freight_id: number, driver_id: number): Promise<number> {
+    const res = await pool.query('INSERT INTO "FreightDriverRequests" ("driver_id", "freight_id") VALUES ($1, $2)', [driver_id, freight_id]);
+    return res.rowCount;
+}
+
+async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus): Promise<number> {
+    if(new_status == "accepted") {
+        const res2 = await pool.query(`UPDATE "Freights" SET driver_id = $1, updated_at = now() WHERE id = $2 AND driver_id IS NULL`, [driver_id, freight_id]);
+        console.log(res2)
+        if(res2.rowCount < 1) {
+            throw new Error("freight already had a driver!");
+        }
+        await pool.query(`UPDATE "FreightDriverRequests" SET status = 'denied', updated_at = now() WHERE freight_id = $1 AND driver_id != $2`, [freight_id, driver_id]);
+    }
+    const res = await pool.query('UPDATE "FreightDriverRequests" SET status = $1, updated_at = now() WHERE driver_id = $2 AND freight_id = $3', [new_status, driver_id, freight_id]);
+    console.log(res)
+    return res.rowCount;
+}
 
 const freights = {
     getAll: getAllFreights,
@@ -98,5 +138,7 @@ const freights = {
     insert: insert,
     delete: deleteF,
     getAllForDrivers,
+    driverRequest,
+    adminUpdateFreightRequest,
 }
 export default freights;

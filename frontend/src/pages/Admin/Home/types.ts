@@ -1,4 +1,4 @@
-import { IFreight } from '../../../types';
+import { DriverRequestStatus, IFreight, IFreightRequest } from '../../../types';
 
 export interface PropsModalFreight {
     opened: boolean,
@@ -7,4 +7,12 @@ export interface PropsModalFreight {
     addFreight: (Freight: IFreight) => void,
     editFreight: (Freight: IFreight) => void,
     freight?: IFreight
+}
+
+
+export interface PropsModalRequest {
+    opened: boolean,
+    closeModal: () => void,
+    requests: IFreightRequest[],
+    updateFreightRequest: (freight_id: number, driver_id: number, newStatus: DriverRequestStatus) => void,
 }
