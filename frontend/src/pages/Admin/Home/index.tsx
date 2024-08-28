@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import MCard from "../../../components/MCard";
 import { Button } from "react-bootstrap";
 import { IFreight } from "../../../types";
-import { createFreight, getFreights, updateFreight, deleteFreight } from "../../../hooks/Freight";
+import * as api from "../../../hooks/Freight";
 import ModalFreight from "./ModalFreight";
 import { PropsModalFreight } from "./types";
 import MNavbarCompany from "../../../components/MNavbarAdmin";
@@ -17,30 +17,30 @@ function Home() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getFreights();
+      const data = await api.getFreights();
       setFreights(data);
     };
     fetchData();
   }, []);
 
   async function update(newFreight: IFreight) {
-    const res = await updateFreight(newFreight)
+    const res = await api.updateFreight(newFreight)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar atualizar o Frete, por favor, tente novamente")
       return;
     }
     setModalState(false)
-    setFreights(await getFreights());
+    setFreights(await api.getFreights());
   }
 
   async function add(newFreight: IFreight) {
-    const res = await createFreight(newFreight)
+    const res = await api.createFreight(newFreight)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar criar o Frete, por favor, tente novamente")
       return;
     }
     setModalState(false)
-    setFreights(await getFreights());
+    setFreights(await api.getFreights());
   }
 
   async function del(id: number | undefined) {
@@ -51,13 +51,13 @@ function Home() {
     if (!confirm('Deseja realmente APAGAR este Frete?')) {
       return;
     }
-    const res = await deleteFreight(id)
+    const res = await api.deleteFreight(id)
     if (!res.success) {
       alert(res.error || "Erro ocorreu ao tentar apagar o Frete, por favor, tente novamente")
       return;
     }
     setModalState(false)
-    setFreights(await getFreights());
+    setFreights(await api.getFreights());
   }
 
 
@@ -90,7 +90,7 @@ function Home() {
                 <MCard
                   key={item.id}
                   title={"Produto: " + (item.product_name || "")}
-                  subtitle={"R$" + item.price + ` + ${item.rate} (taxa)`}
+                  subtitle={"R$" + item.price + ` (${item.rate} de taxa)`}
                   text={[
                     `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
                     `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,

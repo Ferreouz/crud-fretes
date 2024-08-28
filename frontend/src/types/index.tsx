@@ -19,6 +19,7 @@ export interface IFreight {
     closed_at?: Date,
     created_at?: Date,
     updated_at?: Date,
+    driver_receives?: string,
 }
 export interface IVehicleType {
     name: string,

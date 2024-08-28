@@ -18,6 +18,7 @@ export default function route(app) {
         for (let i = 0; i < freights.length; i++) {
             const prices = calculateFreightPrice(freights[i].distance, freights[i].vehicle.weight);
 
+            freights[i].driver_receives = formatMoney(prices.price - prices.rate);
             freights[i].price = formatMoney(prices.price);
             freights[i].rate = formatMoney(prices.rate);
         }

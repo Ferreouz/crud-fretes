@@ -23,7 +23,7 @@ export function formatMoney(int: number | undefined): string | undefined {
     if (!int || !(int > 0)) {
         return undefined;
     }
-    let out = int.toString();
+    let out = int.toFixed(2);
     if(!out.includes('.')){
         return out + ",00";
     }

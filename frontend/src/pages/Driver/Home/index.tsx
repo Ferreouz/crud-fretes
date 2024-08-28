@@ -1,20 +1,37 @@
 import { useState, useEffect } from "react";
-import Card from "../../../components/MCard";
+import MCard from "../../../components/MCard";
 import { IFreight } from "../../../types";
-import { getFreights } from "../../../hooks/Freight";
 import MNavbar from "../../../components/MNavbarDriver";
-import { Col } from 'react-bootstrap';
+import { Col, Card } from 'react-bootstrap';
+import moment from "moment";
+import * as api from "../../../hooks/Freight";
+
 function Home() {
   const [freights, setFreights] = useState<IFreight[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getFreights();
+      const data = await api.getFreights();
       setFreights(data);
     };
     fetchData();
   }, []);
 
+  async function requestFreight(id: IFreight["id"]) {
+    if (!id) {
+      alert("Ocorreu um erro inesperado, por favor, contate o suporte")
+      return;
+    }
+    if (!confirm('Deseja realmente solicitar este Frete?')) {
+      return;
+    }
+    const res = await api.requestFreight(id)
+    if (!res.success) {
+      alert(res.error || "Erro ocorreu ao tentar solicitar o Frete, por favor, tente novamente")
+      return;
+    }
+    setFreights(await api.getFreights());
+  }
   return (
     <>
       <MNavbar />
@@ -27,14 +44,22 @@ function Home() {
           <div className="row gy-5">
             {freights?.map((item: IFreight) => (
               <Col key={item.id}>
-                <Card
+                <MCard
                   key={item.id}
-                  title={"Produto: " + (item.product_name || "")}
-                  subtitle={"R$" + item.price + ` + ${item.rate} (taxa)`}
+                  title={item.driver_receives ? "Você receberá: R$" + (item.driver_receives) : "erro ao calcular o preço"}
+                  subtitle={"Produto: " + (item.product_name || "")}
                   text={[
-                    `Veículo: ${item.vehicle?.plate} ${item.distance}Km`,
-                    `Status: ${item.open ? "Aberto" : "Aguardando Motorista"}`,
+                    `Veículo: ${item.vehicle?.name}`,
+                    `Tipo: ${item.vehicle?.type}`,
+                    `${item.distance}Km`,
                   ]}
+                  footer={
+                    <>
+                      <Card.Link className={"btn btn-primary" + (item.open == true ? "" : " disabled")} onClick={() => requestFreight(item.id)}>Solicitar</Card.Link>
+                      <br />
+                      <small className="text-info">Última alteração {moment(item.updated_at).format("DD/MM HH:mm")}</small>
+                    </>
+                  }
                 />
               </Col>
             ))}
