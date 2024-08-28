@@ -8,7 +8,6 @@ export interface IFreight {
     driver_id?: number,
     vehicle_plate: string,
     distance: number,
-    open: boolean,
     closed_at?: string,
     created_at: string,
     updated_at: string,

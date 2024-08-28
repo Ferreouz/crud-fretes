@@ -37,7 +37,6 @@ CREATE TABLE "Freights" (
     "driver_id" INT,
     "distance" INT NOT NULL,
     "vehicle_plate" CHAR(8) NOT NULL,
-    "open" boolean DEFAULT true,
     "closed_at" TIMESTAMPTZ,
     "created_at" TIMESTAMPTZ DEFAULT now(),
     "updated_at" TIMESTAMPTZ DEFAULT now(),

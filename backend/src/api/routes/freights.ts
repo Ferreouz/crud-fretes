@@ -22,7 +22,7 @@ export default function route(app) {
             freights[i].price = formatMoney(prices.price);
             freights[i].rate = formatMoney(prices.rate);
         }
-
+        console.log(freights)
         return res.send(freights);
     })
 

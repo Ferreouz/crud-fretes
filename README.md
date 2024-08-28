@@ -11,7 +11,7 @@
 - Generate report
 - When Driver asks for freight and receives it, price and rate are stored in db
 - Create tests logic (DONE)
-- REMOVE open from freights table, replace with driver_id != null
+- REMOVE open from freights table, replace with driver_id != null (DONE)
 - Install on Docker (DONE)
 - Publish live demo
 

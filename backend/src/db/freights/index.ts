@@ -42,7 +42,7 @@ async function getAllFreightsWithVehicle():Promise<Array<IFreightWithVehicle>> {
 
 async function getAllForDrivers(driver_id: number):Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
-    Select f.*, jsonb_build_object(
+Select f.*, jsonb_build_object(
     'plate', v.plate,
     'name', v.name,
     'type', v.type,
@@ -53,11 +53,14 @@ async function getAllForDrivers(driver_id: number):Promise<Array<IFreightWithVeh
     FROM "Freights" as f 
         INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
         INNER JOIN "VehicleTypes" as t ON v.type = t.name
-        WHERE driver_id = $1 OR open = true
-        order by f.updated_at desc    
+        WHERE f.driver_id = $1 
+        OR (SELECT updated_at FROM "FreightDriverRequests" as req WHERE req.driver_id = $1 AND freight_id = f.id) IS NOT NULL
+        OR f.driver_id IS NULL
+        order by f.updated_at desc;
     `, [driver_id]);
     return res.rows;
 }
+// 
 async function update(id: number, freight: IFreight):Promise<number> {
     delete freight.id;
     const keys = Object.keys(freight);
@@ -115,11 +118,13 @@ async function deleteF(id: number): Promise<number> {
     return res.rowCount;
 }
 
+// has a bug: if from api a driver tries to request a frontend non appearing freight he is able to, has no effect on the logic tho. #TODO 
 async function driverRequest(freight_id: number, driver_id: number): Promise<number> {
     const res = await pool.query('INSERT INTO "FreightDriverRequests" ("driver_id", "freight_id") VALUES ($1, $2)', [driver_id, freight_id]);
     return res.rowCount;
 }
 
+// has a bug: if from api a admin can deny a driver's request even if its ongoing with another, has no effect on the logic tho. #TODO 
 async function adminUpdateFreightRequest(freight_id: number, driver_id: number, new_status: DriverRequestStatus): Promise<number> {
     if(new_status == "accepted") {
         const res2 = await pool.query(`UPDATE "Freights" SET driver_id = $1, updated_at = now() WHERE id = $2 AND driver_id IS NULL`, [driver_id, freight_id]);
@@ -129,7 +134,7 @@ async function adminUpdateFreightRequest(freight_id: number, driver_id: number, 
         }
         await pool.query(`UPDATE "FreightDriverRequests" SET status = 'denied', updated_at = now() WHERE freight_id = $1 AND driver_id != $2`, [freight_id, driver_id]);
     }
-    const res = await pool.query('UPDATE "FreightDriverRequests" SET status = $1, updated_at = now() WHERE driver_id = $2 AND freight_id = $3', [new_status, driver_id, freight_id]);
+    const res = await pool.query(`UPDATE "FreightDriverRequests" SET status = $1, updated_at = now() WHERE driver_id = $2 AND freight_id = $3 AND status != 'accepted'`, [new_status, driver_id, freight_id]);
     return res.rowCount;
 }
 

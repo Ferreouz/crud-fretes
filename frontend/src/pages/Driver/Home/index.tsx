@@ -55,7 +55,7 @@ function Home() {
                   ]}
                   footer={
                     <>
-                      <Card.Link className={"btn btn-primary" + (item.driver_id == null || item.driver_requested_at ? " disabled" : "")} onClick={() => requestFreight(item.id)}>Solicitar</Card.Link>
+                      <Card.Link className={"btn btn-primary" + (item.driver_id != null || item.driver_requested_at ? " disabled" : "")} onClick={() => requestFreight(item.id)}>Solicitar</Card.Link>
                       <br />
                       {
                         item.driver_requested_at ?
