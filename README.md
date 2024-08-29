@@ -29,6 +29,16 @@ To access as the Administrator, the login is: admin@admin.com and password: senh
 
 Thank you for your patience ;)
 
+## Rebuild the images (when the repo updates)
+
+run the utility:
+```bash
+sudo bash rebuild.sh
+```
+
+*OBS*: it will reset the DB (to be fixed)
+
+
 ## TODO
 - CHECK report generation
 - CRUD Vehicles (DONE)
@@ -49,7 +59,8 @@ Thank you for your patience ;)
 - Beautify the interface
 - Make the api more robust (more tests required)
 - README (DONE)
+- ADD persistence db
 
-## Bugs
+## Bugs 
  - Array of DriverRequests when null returns as array of null from db
  - When user logs, freights are not shown (DONE)
