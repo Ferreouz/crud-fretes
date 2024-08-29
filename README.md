@@ -24,6 +24,9 @@ docker compose up -d
 
 That's it, now the API is running on port 8080 and go to http://localhost/ to see the frontend
 
+To access as the Administrator, the login is: admin@admin.com and password: senha
+
+
 Thank you for your patience ;)
 
 ## TODO
