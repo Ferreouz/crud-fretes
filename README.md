@@ -17,7 +17,13 @@ cd crud-fretes
 ```
 2. IMPORTANT! change your db password and JWT secret in docker-compose.yml
 
-3. Build and start the containers
+3. Create the frontend environment file to work correctly
+_edit the file if you configured a different port or is working with a domain_
+```bash 
+cp frontend/.env.example frontend/.env
+```
+
+4. Build and start the containers
 ```bash
 docker compose up -d
 ```
