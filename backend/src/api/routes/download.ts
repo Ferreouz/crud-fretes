@@ -18,6 +18,7 @@ export default function route(app) {
             res.setHeader('Content-type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             res.download(fullPath);
         } catch (error) {
+            console.log("Error in /report/yesterday", error)
             return res.sendStatus(400);
         }
     });
@@ -31,6 +32,7 @@ export default function route(app) {
             await generateReport();
             return res.sendStatus(200);
         } catch (error) {
+            console.log("Error in /report/yesterday/generate", error)
             return res.sendStatus(400);
         }
     });

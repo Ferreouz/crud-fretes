@@ -30,12 +30,25 @@ export default function route(app) {
             await db.users.insert(req.body);
             return res.sendStatus(201);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /users", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe usuário com este email, por favor digite outro"
                 });
             }
+            return res.sendStatus(400);
+        }
+    })
+    
+    app.delete("/users/activate/:id", middleware, async (req: Request, res: Response) => {
+        if (!isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            await db.users.unDelete(req.params.id);
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log("Error in /users/activate/:id", e)
             return res.sendStatus(400);
         }
     })
@@ -51,7 +64,7 @@ export default function route(app) {
             await db.users.update(req.params.id, req.body);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /users/:id", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe usuário com este email, por favor digite outro"
@@ -70,20 +83,7 @@ export default function route(app) {
             await db.users.delete(req.params.id);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
-            return res.sendStatus(400);
-        }
-    })
-
-    app.delete("/users/activate/:id", middleware, async (req: Request, res: Response) => {
-        if (!isAdmin(req.user)) {
-            return res.sendStatus(403);
-        }
-        try {
-            await db.users.unDelete(req.params.id);
-            return res.sendStatus(200);
-        } catch (e) {
-            console.log(e)
+            console.log("Error in /users/:id", e)
             return res.sendStatus(400);
         }
     })

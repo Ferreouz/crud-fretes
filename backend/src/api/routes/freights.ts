@@ -45,7 +45,8 @@ export default function route(app) {
             await db.freights.insert(req.body);
             return res.sendStatus(201);
         } catch (e) {
-            console.log(e, typeof e)
+            console.log("Error in /freights", e)
+
             if ('code' in e && e.code == '23503') {
                 return res.status(400).json({
                     error: "Escolha uma placa válida"
@@ -66,7 +67,7 @@ export default function route(app) {
             await db.freights.driverRequest(req.body.id, req.user.id);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /freights/request", e)
             if ('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Você já solicitou este frete, aguarde a resposta da empresa"
@@ -101,7 +102,7 @@ export default function route(app) {
             await db.freights.adminUpdateFreightRequest(req.body.freight_id, req.body.driver_id, req.body.new_status, price, rate);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /freights/request", e)
             if ('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Você já solicitou este frete, aguarde a resposta da empresa"
@@ -125,7 +126,7 @@ export default function route(app) {
             }
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /freights/status", e)
             if ('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Você já solicitou este frete, aguarde a resposta da empresa"
@@ -148,6 +149,7 @@ export default function route(app) {
             }
             return res.sendStatus(200);
         } catch (e) {
+            console.log("Error in /freights/id", e)
             return res.sendStatus(400);
         }
     })
@@ -160,6 +162,7 @@ export default function route(app) {
             await db.freights.delete(req.params.id);
             return res.sendStatus(200);
         } catch (e) {
+            console.log("Error in /freights/id", e)
             return res.sendStatus(400);
         }
     })

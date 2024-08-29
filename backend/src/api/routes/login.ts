@@ -36,7 +36,7 @@ export default function route(app) {
             return res.json({ access_token });
             
         } catch (error) {
-            console.log(error)
+            console.log("Error in /auth/login", error)
             return res.status(401).json({
                 error: "Credenciais Inválidas"
             }); 
@@ -71,7 +71,7 @@ export default function route(app) {
                 access_token,
             });
         } catch (e) {
-            console.log(e)
+            console.log("Error in /auth/register", e)
             if ('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe um usuario com este email, por favor digite outro"

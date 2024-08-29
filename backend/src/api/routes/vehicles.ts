@@ -25,7 +25,7 @@ export default function route(app) {
             await db.vehicles.insert(req.body);
             return res.sendStatus(201);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /vehicles", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe um veiculo com esta placa, por favor digite outra"
@@ -44,7 +44,7 @@ export default function route(app) {
             await db.vehicles.update(req.params.plate, req.body);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /vehicles/plate", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe um veiculo com esta placa, por favor digite outra"
@@ -59,11 +59,10 @@ export default function route(app) {
             return res.sendStatus(403);
         }
         try {
-            console.log(req.body)
             await db.vehicles.delete(req.params.plate);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e, typeof e)
+            console.log("Error in /vehicles/plate", e)
             if('code' in e && e.code == '23503') {
                 return res.status(400).json({
                     error: "Existe frete(s) usando este veículo, altere ou apague o frete para poder apagar este veículo"
@@ -94,7 +93,7 @@ export default function route(app) {
             await db.vehicles.types.insert(req.body);
             return res.sendStatus(201);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /vehicleTypes", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe um tipo com este nome, por favor digite outro"
@@ -113,7 +112,7 @@ export default function route(app) {
             await db.vehicles.types.update(req.params.name, req.body);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e)
+            console.log("Error in /vehicleTypes/name", e)
             if('code' in e && e.code == '23505') {
                 return res.status(400).json({
                     error: "Já existe um tipo com este nome, por favor digite outro"
@@ -132,7 +131,7 @@ export default function route(app) {
             await db.vehicles.types.delete(req.params.name);
             return res.sendStatus(200);
         } catch (e) {
-            console.log(e, typeof e)
+            console.log("Error in /vehicleTypes/name", e)
             if('code' in e && e.code == '23503') {
                 return res.status(400).json({
                     error: "Existe veiculo(s) deste tipo, altere ou apague ele(s) para poder apagar este tipo"
