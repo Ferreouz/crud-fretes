@@ -1,5 +1,5 @@
 import pool from "../pool";
-import { IFreight, IFreightWithVehicle, isFreightModifiableKey, DriverRequestStatus } from "./types";
+import { IFreight, IFreightWithVehicle, isFreightModifiableKey, DriverRequestStatus, FreightStatus } from "./types";
 
 async function getAllFreights(): Promise<Array<IFreight>> {
     const res = await pool.query('Select * from "Freights" order by updated_at desc');
@@ -148,6 +148,17 @@ async function adminUpdateFreightRequest(freight_id: number, driver_id: number, 
     return res.rowCount;
 }
 
+async function driverFreightStatusChange(freight_id: number, driver_id: number, new_status: FreightStatus): Promise<number> {
+    let queryString = "";
+    if (new_status == "Finalizado") {
+        queryString = ", delivered_at = now()";
+    }
+    const res = await pool.query(
+        `UPDATE "Freights" SET status = $1, updated_at = now() ${queryString} WHERE id = $2 AND status != 'Finalizado' AND driver_id = $3`,
+        [new_status,  freight_id, driver_id]);
+    return res.rowCount;
+}
+
 const freights = {
     getAll: getAllFreights,
     getAllWithVehicle: getAllFreightsWithVehicle,
@@ -158,5 +169,6 @@ const freights = {
     driverRequest,
     adminUpdateFreightRequest,
     getWithVehicle: getFreightWithVehicle,
+    driverFreightStatusChange,
 }
 export default freights;

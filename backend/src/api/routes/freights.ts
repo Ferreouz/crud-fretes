@@ -111,6 +111,30 @@ export default function route(app) {
         }
     })
 
+
+    //Driver changing status
+    app.put("/freights/status", middleware, async (req: Request, res: Response) => {
+        if (isAdmin(req.user)) {
+            return res.sendStatus(403);
+        }
+        try {
+            console.log(req.body.freight_id, req.user.id, req.body.new_status)
+            const rowsCount = await db.freights.driverFreightStatusChange(req.body.freight_id, req.user.id, req.body.new_status);
+            if(rowsCount < 1) {
+                throw new Error("Driver trying to change freight of another driver OR trying to change a Finished freight");
+            }
+            return res.sendStatus(200);
+        } catch (e) {
+            console.log(e)
+            if ('code' in e && e.code == '23505') {
+                return res.status(400).json({
+                    error: "Você já solicitou este frete, aguarde a resposta da empresa"
+                });
+            }
+            return res.sendStatus(400);
+        }
+    })
+
     app.put("/freights/:id", middleware, async (req: Request, res: Response) => {
         if (!isAdmin(req.user)) {
             return res.sendStatus(403);

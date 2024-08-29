@@ -1,5 +1,5 @@
 import axios, { AxiosError } from "axios";
-import { IFreight } from "../types";
+import { FreightStatus, IFreight } from "../types";
 import getCookie from "../utils/getCookie";
 
 export async function getFreights(): Promise<IFreight[]> {
@@ -87,6 +87,24 @@ export async function requestFreight(id: number): Promise<{ success: boolean, er
 export async function updateFreightRequest(freight_id: number, driver_id: number, new_status: IFreight["driver_requested_status"]): Promise<{ success: boolean, error?: string }> {
     try {
         await axios.put(import.meta.env.VITE_BACKEND_URL + "/freights/request", {freight_id, driver_id, new_status}, {
+            headers: {
+                Authorization: `Bearer ${getCookie("_auth")}`
+            }
+        });
+        return { success: true };
+    } catch (e) {
+        if (e instanceof AxiosError) {
+            return { success: false, error: e?.response?.data?.error }
+        }
+        console.log(e)
+    }
+    return { success: false }
+}
+
+
+export async function changeFreightStatus(freight_id: number, new_status: FreightStatus): Promise<{ success: boolean, error?: string }> {
+    try {
+        await axios.put(import.meta.env.VITE_BACKEND_URL + "/freights/status", {freight_id, new_status}, {
             headers: {
                 Authorization: `Bearer ${getCookie("_auth")}`
             }

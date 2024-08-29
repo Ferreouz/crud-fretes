@@ -70,7 +70,7 @@ function Home() {
           operation={operation as PropsModalVehicleType["operation"]}
         />
         <div className="d-flex justify-content-evenly">
-          <h3 className="col-3">Veículos</h3>
+          <h3 className="col-3">Tipos de Veículo</h3>
           <div className=" col-md-3 offset-md-3">
             <Button variant="primary" onClick={() => {
               setOperation("create");

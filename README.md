@@ -7,7 +7,7 @@
 - Edit Vehicles Weights (DONE) 
 - Vision of drivers (DONE)
 - Driver request and Admin accept (DONE)
-- Driver change freight status 
+- Driver change freight status (DONE) 
 - Generate report
 - When Driver asks for freight and receives it, price and rate are stored in db (DONE)
 - Create tests logic (DONE)
