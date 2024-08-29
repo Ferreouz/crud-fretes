@@ -71,11 +71,10 @@ async function getAllFreightsWithVehicleDeliveredYesterday(): Promise<Array<IFre
         INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
         INNER JOIN "VehicleTypes" as t ON v.type = t.name
         INNER JOIN "Users" as d ON d.id = f.driver_id
-        WHERE status = 'Finalizado' AND delivered_at::date = $1::date 
+        WHERE status = 'Finalizado' 
+        AND (delivered_at AT TIME ZONE 'America/Sao_Paulo')::date = ((now() AT TIME ZONE 'America/Sao_Paulo')::date -  '1 day'::interval)
         order by f.updated_at desc
-    `, [
-        new Date(Date.now() - 86400000).toISOString()
-    ]);
+    `);
     return res.rows;
 }
 
