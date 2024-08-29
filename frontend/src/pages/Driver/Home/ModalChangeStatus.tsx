@@ -15,7 +15,7 @@ function ModalChangeStatus(args: ModalChangeStatusProps) {
     return (
         <>
             <Modal show={args.opened} onHide={close}>
-                <Form onSubmit={() => args.onSubmit(args.freight?.id as number, status)}>
+                <Form onSubmit={() => args.onSubmit(status)}>
                     <Modal.Header closeButton>
                         <Modal.Title>
                             Mudar status

@@ -8,12 +8,13 @@
 - Vision of drivers (DONE)
 - Driver request and Admin accept (DONE)
 - Driver change freight status (DONE) 
-- Generate report
+- Generate report (DONE)
 - When Driver asks for freight and receives it, price and rate are stored in db (DONE)
 - Create tests logic (DONE)
 - REMOVE open from freights table, replace with driver_id != null (DONE)
 - Install on Docker (DONE)
 - Publish live demo
+- README
 
 ## Bugs
  - Array of DriverRequests when null returns as [null] from db

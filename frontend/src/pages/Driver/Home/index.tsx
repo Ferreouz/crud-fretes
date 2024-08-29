@@ -53,7 +53,7 @@ function Home() {
     <>
       <MNavbar />
       <ModalChangeStatus opened={showModal} closeModal={() => setModalState(false)} freight={freightForStatusChange as IFreight}
-        onSubmit={(freightId: number, newStatus: FreightStatus) => {
+        onSubmit={(newStatus: FreightStatus) => {
           changeStatus(freightForStatusChange?.id as number, newStatus);
           setModalState(false);
         }}

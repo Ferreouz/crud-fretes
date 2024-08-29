@@ -22,6 +22,7 @@ export interface IFreight {
     drivers_requests?: IFreightRequest[],
     driver_requested_at?: string,
     driver_requested_status?: DriverRequestStatus,
+    driver?: IUser,
 }
 
 export interface IFreightRequest {

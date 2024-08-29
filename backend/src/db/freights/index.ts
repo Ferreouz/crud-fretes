@@ -54,6 +54,30 @@ async function getAllFreightsWithVehicle(): Promise<Array<IFreightWithVehicle>> 
     `);
     return res.rows;
 }
+async function getAllFreightsWithVehicleDeliveredYesterday(): Promise<Array<IFreightWithVehicle>> {
+    const res = await pool.query(`
+    Select f.*, 
+        jsonb_build_object(
+            'plate', v.plate,
+            'name', v.name,
+            'type', v.type,
+            'weight', t.weight
+        ) as vehicle,
+        jsonb_build_object(
+            'email', d.email,
+            'name', d.name
+        ) as driver  
+    FROM "Freights" as f 
+        INNER JOIN "Vehicles" as v ON f.vehicle_plate = v.plate 
+        INNER JOIN "VehicleTypes" as t ON v.type = t.name
+        INNER JOIN "Users" as d ON d.id = f.driver_id
+        WHERE status = 'Finalizado' AND delivered_at::date = $1::date 
+        order by f.updated_at desc
+    `, [
+        new Date(Date.now() - 86400000).toISOString()
+    ]);
+    return res.rows;
+}
 
 async function getAllForDrivers(driver_id: number): Promise<Array<IFreightWithVehicle>> {
     const res = await pool.query(`
@@ -170,5 +194,6 @@ const freights = {
     adminUpdateFreightRequest,
     getWithVehicle: getFreightWithVehicle,
     driverFreightStatusChange,
+    getAllFreightsWithVehicleDeliveredYesterday,
 }
 export default freights;
