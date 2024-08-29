@@ -163,7 +163,9 @@ export default function route(app) {
             return res.sendStatus(200);
         } catch (e) {
             console.log("Error in /freights/id", e)
-            return res.sendStatus(400);
+            return res.status(400).json({
+                error: "Erro ao apagar frete, será que já está em andamento?"
+            });
         }
     })
 

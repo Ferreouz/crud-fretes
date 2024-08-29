@@ -53,8 +53,8 @@ CREATE TABLE "FreightDriverRequests" (
     "created_at" TIMESTAMPTZ DEFAULT now(),
     "status" VARCHAR(10) DEFAULT 'waiting',
     "updated_at" TIMESTAMPTZ DEFAULT now(),
-    CONSTRAINT "FK_Driver_Id" FOREIGN KEY ("driver_id") REFERENCES "Users" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT "FK_Freight_Id" FOREIGN KEY ("freight_id") REFERENCES "Freights" ("id") ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT "FK_Driver_Id" FOREIGN KEY ("driver_id") REFERENCES "Users" ("id") ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT "FK_Freight_Id" FOREIGN KEY ("freight_id") REFERENCES "Freights" ("id") ON UPDATE CASCADE ON DELETE CASCADE,
     PRIMARY KEY ("driver_id", "freight_id")
 );
 

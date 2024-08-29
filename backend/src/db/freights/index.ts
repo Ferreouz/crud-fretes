@@ -149,7 +149,7 @@ async function insert(freight: IFreight): Promise<number> {
 }
 
 async function deleteF(id: number): Promise<number> {
-    const res = await pool.query('DELETE FROM "Freights" WHERE id = $1', [id]);
+    const res = await pool.query('DELETE FROM "Freights" WHERE id = $1 AND driver_id IS NULL', [id]);
     return res.rowCount;
 }
 
