@@ -2,7 +2,6 @@ services:
   postgres:
     container_name: postgres
     image: postgres
-    env_file: ./backend/.env
     volumes:
       - ./backend/sql/01-create-db.sql:/docker-entrypoint-initdb.d/01-create-db.sql
       - ./backend/sql/02-default-values.sql:/docker-entrypoint-initdb.d/02-default-values.sql
