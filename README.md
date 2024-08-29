@@ -27,6 +27,7 @@ That's it, now the API is running on port 8080 and go to http://localhost/ to se
 Thank you for your patience ;)
 
 ## TODO
+- CHECK report generation
 - CRUD Vehicles (DONE)
 - Validation of FRONTEND fields (DONE)
 - Message of errors DB: duplicate key (DONE); Freight relation with Vehicle on delete (DONE); fields missing (DONE)
