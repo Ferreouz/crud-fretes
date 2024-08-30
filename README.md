@@ -15,7 +15,13 @@ You are gonna need docker to run this :)
 git clone https://github.com/Ferreouz/crud-fretes
 cd crud-fretes
 ```
+
 2. IMPORTANT! change your db password and JWT secret in docker-compose.yml
+Good way to generate a good token/password is:
+```bash
+openssl rand -base64 36
+```
+
 
 3. Create the frontend environment file to work correctly
 _edit the file if you configured a different port or is working with a domain_
