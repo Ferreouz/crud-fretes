@@ -46,7 +46,7 @@ sudo bash rebuild.sh
 
 
 ## TODO
-- CHECK report generation
+- CHECK report generation (DONE)
 - CRUD Vehicles (DONE)
 - Validation of FRONTEND fields (DONE)
 - Message of errors DB: duplicate key (DONE); Freight relation with Vehicle on delete (DONE); fields missing (DONE)
@@ -61,7 +61,7 @@ sudo bash rebuild.sh
 - Create tests logic (DONE)
 - REMOVE open from freights table, replace with driver_id != null (DONE)
 - Install on Docker (DONE)
-- Publish live demo
+- Publish live demo (DONE)
 - Beautify the interface
 - Make the api more robust (more tests required)
 - README (DONE)
